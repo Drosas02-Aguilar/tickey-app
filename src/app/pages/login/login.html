@@ -1,0 +1,81 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-dark">
+
+  <div class="card shadow-lg border-0" style="width: 100%; max-width: 420px;">
+
+    <!-- Header -->
+    <div class="card-header bg-primary text-white text-center py-4 border-0">
+      <i class="bi bi-ticket-perforated fs-1"></i>
+      <h4 class="mt-2 mb-0 fw-bold">TicketApp</h4>
+      <small class="opacity-75">Plataforma de gestión de tickets</small>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body p-4">
+
+      <h5 class="text-center mb-4 text-muted">Iniciar Sesión</h5>
+
+      <!-- Error -->
+      <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center gap-2">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Formulario -->
+      <form (ngSubmit)="login()">
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-person me-1"></i>Usuario
+          </label>
+          <input
+            type="text"
+            class="form-control form-control-lg"
+            placeholder="Ingresa tu usuario"
+            [(ngModel)]="username"
+            name="username"
+            required
+            autofocus>
+        </div>
+
+        <!-- Password -->
+        <div class="mb-4">
+          <label class="form-label fw-semibold">
+            <i class="bi bi-lock me-1"></i>Contraseña
+          </label>
+          <input
+            type="password"
+            class="form-control form-control-lg"
+            placeholder="Ingresa tu contraseña"
+            [(ngModel)]="password"
+            name="password"
+            required>
+        </div>
+
+        <!-- Botón -->
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg w-100"
+          [disabled]="cargando || !username || !password">
+
+          <span *ngIf="cargando">
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Iniciando sesión...
+          </span>
+
+          <span *ngIf="!cargando">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Entrar
+          </span>
+
+        </button>
+
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer text-center text-muted py-3">
+      <small>© 2025 TicketApp</small>
+    </div>
+
+  </div>
+</div>
