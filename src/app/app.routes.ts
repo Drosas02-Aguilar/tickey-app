@@ -9,6 +9,7 @@ import { TicketDetail } from './pages/tickets/ticket-detail/ticket-detail';
 import { TicketForm } from './pages/tickets/ticket-form/ticket-form';
 import { TicketList } from './pages/tickets/ticket-list/ticket-list';
 import { Layout } from './shared/components/layout/layout';
+import { MisTickets } from './pages/tickets/mis-tickets/mis-tickets';
 
 export const routes: Routes = [
   {
@@ -24,37 +25,45 @@ export const routes: Routes = [
         path: 'tickets',
         component: TicketList,
         canActivate: [roleGuard],
-        data: { roles: ['ROLE_ADMIN', 'ROLE_AGENTE'] }
+        data: { roles: ['ADMIN', 'AGENTE'] }
       },
       {
         path: 'tickets/nuevo',
         component: TicketForm,
         canActivate: [roleGuard],
-        data: { roles: ['ROLE_ADMIN', 'ROLE_AGENTE', 'ROLE_USER'] }
+        data: { roles: ['ADMIN', 'AGENTE', 'USER'] }
       },
       {
         path: 'tickets/:id',
         component: TicketDetail,
         canActivate: [roleGuard],
-        data: { roles: ['ROLE_ADMIN', 'ROLE_AGENTE', 'ROLE_USER'] }
+        data: { roles: ['ADMIN', 'AGENTE', 'USER'] }
+      },
+      {
+        path: 'mis-tickets',
+        component: MisTickets,
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'AGENTE', 'USER'] }
+
+
       },
       {
         path: 'usuarios',
         component: UsuarioList,
         canActivate: [roleGuard],
-        data: { roles: ['ROLE_ADMIN', 'ROLE_AGENTE'] }
+        data: { roles: ['ADMIN', 'AGENTE'] }
       },
       {
         path: 'usuarios/nuevo',
         component: UsuarioForm,
         canActivate: [roleGuard],
-        data: { roles: ['ROLE_ADMIN'] }
+        data: { roles: ['ADMIN'] }
       },
       {
         path: 'usuarios/:id/editar',
         component: UsuarioForm,
         canActivate: [roleGuard],
-        data: { roles: ['ROLE_ADMIN'] }
+        data: { roles: ['ADMIN'] }
       },
       {
         path: '',

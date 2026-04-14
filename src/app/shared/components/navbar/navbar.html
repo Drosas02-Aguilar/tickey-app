@@ -1,26 +1,86 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark px-4 shadow-sm">
+  <!-- Botón para colapsar sidebar en móvil -->
+  <button class="btn btn-outline-light me-3 d-lg-none" type="button">
+    <i class="bi bi-list"></i>
+  </button>
 
   <span class="navbar-brand fw-bold">
-    <i class="bi bi-ticket-perforated me-2"></i>TicketApp
+    <i class="bi bi-ticket-perforated me-2 text-primary"></i>TicketApp
   </span>
 
+  <!-- Breadcrumb dinámico -->
+  <nav aria-label="breadcrumb" class="d-none d-md-block ms-4">
+    <ol class="breadcrumb mb-0">
+      <li class="breadcrumb-item">
+        <a routerLink="/tickets" class="text-white-50 text-decoration-none">Inicio</a>
+      </li>
+      <li class="breadcrumb-item active text-white" aria-current="page">
+        {{ obtenerTituloPagina() }}
+      </li>
+    </ol>
+  </nav>
+
   <div class="ms-auto d-flex align-items-center gap-3">
+    <!-- Notificaciones -->
+    <div class="dropdown">
+      <button class="btn btn-outline-light btn-sm position-relative" 
+              type="button" 
+              data-bs-toggle="dropdown">
+        <i class="bi bi-bell"></i>
+        @if (notificacionesPendientes > 0) {
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            {{notificacionesPendientes}}
+            <span class="visually-hidden">notificaciones sin leer</span>
+          </span>
+        }
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li><h6 class="dropdown-header">Notificaciones</h6></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">
+          <i class="bi bi-ticket me-2"></i>Ticket #123 actualizado
+        </a></li>
+        <li><a class="dropdown-item text-center text-primary" href="#">
+          Ver todas
+        </a></li>
+      </ul>
+    </div>
 
-    <!-- Roles -->
-    <span *ngFor="let rol of roles"
-      class="badge bg-secondary">
-      {{ rol }}
-    </span>
+    <!-- Roles (formateados) -->
+    <div class="d-flex gap-1">
+      @for (rol of rolesFormateados(); track rol) {
+        <span class="badge bg-opacity-25 bg-white text-white px-2 py-1">
+          {{ rol }}
+        </span>
+      }
+    </div>
 
-    <!-- Usuario -->
-    <span class="text-white">
-      <i class="bi bi-person-circle me-1"></i>{{ username }}
-    </span>
-
-    <!-- Cerrar sesión -->
-    <button class="btn btn-outline-light btn-sm" (click)="CerrarSesion()">
-      <i class="bi bi-box-arrow-right me-1"></i>Salir
-    </button>
-
+    <!-- Usuario con dropdown -->
+    <div class="dropdown">
+      <button class="btn btn-outline-light dropdown-toggle" 
+              type="button" 
+              data-bs-toggle="dropdown">
+        <i class="bi bi-person-circle me-1"></i>
+        {{ username }}
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <a class="dropdown-item" routerLink="/perfil">
+            <i class="bi bi-person me-2"></i>Mi Perfil
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/configuracion">
+            <i class="bi bi-gear me-2"></i>Configuración
+          </a>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item text-danger" (click)="CerrarSesion()">
+            <i class="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>

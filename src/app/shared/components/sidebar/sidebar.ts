@@ -7,21 +7,21 @@ import { AuthService } from '../../../core/services/auth.service';
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
- templateUrl: './sidebar.html',
+  templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   esAdmin(): boolean {
-    return this.authService.tieneRol('ROLE_ADMIN');
+    return this.authService.tieneRol('ADMIN');
   }
 
   esAdminOAgente(): boolean {
-    return this.authService.tieneRol('ROLE_ADMIN') || 
-           this.authService.tieneRol('ROLE_AGENTE');
+    return this.authService.tieneRol('ADMIN') || this.authService.tieneRol('AGENTE');
   }
 
-
-
+  esUser(): boolean {
+    return this.authService.tieneRol('USER');
+  }
 }

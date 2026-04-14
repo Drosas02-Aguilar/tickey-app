@@ -1,6 +1,4 @@
-<div class="d-flex flex-column bg-dark text-white shadow"
-     style="width: 240px; min-height: 100vh;">
-
+<div class="d-flex flex-column bg-dark text-white shadow" style="width: 240px; min-height: 100vh;">
   <!-- Logo -->
   <div class="px-4 py-3 border-bottom border-secondary">
     <span class="fw-bold fs-5">
@@ -10,13 +8,32 @@
 
   <!-- Links -->
   <nav class="nav flex-column px-2 py-3 gap-1">
+    <!-- Dashboard/Inicio - Todos -->
+    <a routerLink="/tickets"
+       routerLinkActive="active bg-primary rounded"
+       [routerLinkActiveOptions]="{exact: false}"
+       class="nav-link text-white px-3 py-2 rounded">
+      <i class="bi bi-house-door me-2"></i>Inicio
+    </a>
+
+    <!-- Separador -->
+    <div class="border-top border-secondary my-2"></div>
 
     <!-- Tickets - Admin y Agente -->
-    <a *ngIf="esAdminOAgente()"
-       routerLink="/tickets"
+    @if (esAdminOAgente()) {
+      <a routerLink="/tickets"
+         routerLinkActive="active bg-primary rounded"
+         class="nav-link text-white px-3 py-2 rounded">
+        <i class="bi bi-ticket-perforated me-2"></i>Todos los Tickets
+      </a>
+    }
+
+    <!-- Mis Tickets - Todos -->
+    <a routerLink="/tickets"
+       [queryParams]="{filtro: 'mios'}"
        routerLinkActive="active bg-primary rounded"
        class="nav-link text-white px-3 py-2 rounded">
-      <i class="bi bi-ticket me-2"></i>Tickets
+      <i class="bi bi-person me-2"></i>Mis Tickets
     </a>
 
     <!-- Nuevo Ticket - Todos -->
@@ -26,21 +43,39 @@
       <i class="bi bi-plus-circle me-2"></i>Nuevo Ticket
     </a>
 
-    <!-- Usuarios - Admin y Agente -->
-    <a *ngIf="esAdminOAgente()"
-       routerLink="/usuarios"
-       routerLinkActive="active bg-primary rounded"
-       class="nav-link text-white px-3 py-2 rounded">
-      <i class="bi bi-people me-2"></i>Usuarios
-    </a>
+    <!-- Separador -->
+    <div class="border-top border-secondary my-2"></div>
+
+    <!-- Gestión de Usuarios - Admin y Agente -->
+    @if (esAdminOAgente()) {
+      <a routerLink="/usuarios"
+         routerLinkActive="active bg-primary rounded"
+         class="nav-link text-white px-3 py-2 rounded">
+        <i class="bi bi-people me-2"></i>Usuarios
+      </a>
+    }
 
     <!-- Nuevo Usuario - Solo Admin -->
-    <a *ngIf="esAdmin()"
-       routerLink="/usuarios/nuevo"
-       routerLinkActive="active bg-primary rounded"
-       class="nav-link text-white px-3 py-2 rounded">
-      <i class="bi bi-person-plus me-2"></i>Nuevo Usuario
-    </a>
+    @if (esAdmin()) {
+      <a routerLink="/usuarios/nuevo"
+         routerLinkActive="active bg-primary rounded"
+         class="nav-link text-white px-3 py-2 rounded">
+        <i class="bi bi-person-plus me-2"></i>Nuevo Usuario
+      </a>
+    }
+
+    <!-- Separador -->
+    @if (esAdmin()) {
+      <div class="border-top border-secondary my-2"></div>
+    }
 
   </nav>
+
+  <!-- Footer del sidebar -->
+  <div class="mt-auto p-3 border-top border-secondary">
+    <small class="text-muted d-block text-center">
+      <i class="bi bi-shield-check me-1"></i>
+      v1.0.0
+    </small>
+  </div>
 </div>

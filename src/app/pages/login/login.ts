@@ -12,7 +12,6 @@ import { Router } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-
   username: string = '';
   password: string = '';
   errorMessage: string = '';
@@ -20,33 +19,37 @@ export class Login {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   login(): void {
     this.errorMessage = '';
     this.cargando = true;
 
-    this.authService.login({username: this.username, password: this.password})
-      .subscribe({
-        next: (res) => {
-          this.cargando = false;
+    this.authService.login({ username: this.username, password: this.password }).subscribe({
+      next: (res) => {
+        this.cargando = false;
 
-          if(res.correct && res.object){
-            this.authService.guardarToken(res.object.token);
-            this.authService.guardarRoles(res.object.roles);
-            this.authService.guardarUsername(res.object.username);
+        if (res.correct && res.object) {
+          this.authService.guardarToken(res.object.token);
+          this.authService.guardarRoles(res.object.roles);
+          this.authService.guardarUsername(res.object.username);
+
+          const roles = res.object.roles;
+
+          if (roles.includes('ADMIN') || roles.includes('AGENTE')) {
             this.router.navigate(['/tickets']);
-          }else{
-            this.errorMessage = res.errorMessage || 'Credenciales incorrectas'; 
-
+          } else {
+            this.router.navigate(['/mis-tickets']);
           }
-
-        },
-        error: (err) => {
-          this.cargando = false;
-          this.errorMessage = 'Error al conectar con el servidor';
+        } else {
+          this.errorMessage = res.errorMessage || 'Credenciales incorrectas';
         }
-      });
-    }
+      },
+      error: (err) => {
+        this.cargando = false;
+        this.errorMessage = 'Error al conectar con el servidor';
+      },
+    });
   }
+}
