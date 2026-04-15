@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { RouterOutlet, Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, Event } from '@angular/router';
 import { Navbar } from '../navbar/navbar';
 import { Sidebar } from '../sidebar/sidebar';
-import { filter } from 'rxjs/operators';
 import { Subscription, interval } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { AuthService } from '../../../core/services/auth.service';
 
 interface Toast {
@@ -30,6 +30,7 @@ export class Layout implements OnInit, OnDestroy {
   toasts: Toast[] = [];
   private toastCounter = 0;
   private sessionTimerSubscription?: Subscription;
+  private routerSubscription?: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -43,24 +44,34 @@ export class Layout implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.sessionTimerSubscription) {
-      this.sessionTimerSubscription.unsubscribe();
-    }
+    this.sessionTimerSubscription?.unsubscribe();
+    this.routerSubscription?.unsubscribe();
   }
 
   private configurarLoaderGlobal(): void {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.cargando = true;
-      }
-      if (event instanceof NavigationEnd || 
-          event instanceof NavigationCancel || 
-          event instanceof NavigationError) {
-        setTimeout(() => {
+    this.routerSubscription = this.router.events
+      .pipe(
+        filter(event =>
+          event instanceof NavigationStart ||
+          event instanceof NavigationEnd ||
+          event instanceof NavigationCancel ||
+          event instanceof NavigationError
+        )
+      )
+      .subscribe((event: Event) => {
+
+        if (event instanceof NavigationStart) {
+          this.cargando = true;
+        }
+
+        if (
+          event instanceof NavigationEnd ||
+          event instanceof NavigationCancel ||
+          event instanceof NavigationError
+        ) {
           this.cargando = false;
-        }, 300);
-      }
-    });
+        }
+      });
   }
 
   private iniciarTemporizadorSesion(): void {
@@ -96,24 +107,23 @@ export class Layout implements OnInit, OnDestroy {
         const minutos = Math.floor((tiempoRestante % (1000 * 60 * 60)) / (1000 * 60));
         this.tiempoSesion = `${horas}h ${minutos}m`;
       }
-    } catch (error) {
+    } catch {
       this.tiempoSesion = '--:--';
     }
   }
 
   private escucharEventosSidebar(): void {
-    // Escuchar cambios de tamaño de pantalla
     window.addEventListener('resize', () => {
       if (window.innerWidth > 992) {
         this.sidebarAbierto = false;
+        document.body.style.overflow = '';
       }
     });
   }
 
   toggleSidebar(): void {
     this.sidebarAbierto = !this.sidebarAbierto;
-    
-    // Bloquear scroll del body cuando el sidebar está abierto en móvil
+
     if (window.innerWidth <= 992) {
       document.body.style.overflow = this.sidebarAbierto ? 'hidden' : '';
     }
@@ -140,7 +150,6 @@ export class Layout implements OnInit, OnDestroy {
 
     this.toasts.push(nuevoToast);
 
-    // Auto-cerrar después de 5 segundos
     setTimeout(() => {
       this.cerrarToast(id);
     }, 5000);
@@ -148,10 +157,5 @@ export class Layout implements OnInit, OnDestroy {
 
   cerrarToast(id: number): void {
     this.toasts = this.toasts.filter(t => t.id !== id);
-  }
-
-  // Método para obtener el año actual
-  get anioActual(): number {
-    return new Date().getFullYear();
   }
 }

@@ -8,4 +8,4 @@ export interface Ticket{
     fechacreacion?: string;
     creador?: string;
     asignado?: string;
-}
+}   

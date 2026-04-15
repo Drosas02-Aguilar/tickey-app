@@ -43,7 +43,7 @@ export class Login {
             this.router.navigate(['/mis-tickets']);
           }
         } else {
-          this.errorMessage = res.errorMessage || 'Credenciales incorrectas';
+          this.errorMessage = res.ErrorMessage || 'Credenciales incorrectas';
         }
       },
       error: (err) => {

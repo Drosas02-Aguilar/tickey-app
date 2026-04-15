@@ -3,7 +3,7 @@ export interface ServiceResult<T>{
 correct: boolean;
 status: number;
 message?: string;
-errorMessage?: string;
+ErrorMessage?: string;
 object: T;
-objects: T[];
+Objects: T[];
 }

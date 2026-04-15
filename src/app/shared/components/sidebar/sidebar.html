@@ -8,71 +8,65 @@
 
   <!-- Links -->
   <nav class="nav flex-column px-2 py-3 gap-1">
-    <!-- Dashboard/Inicio - Todos -->
-    <a routerLink="/tickets"
-       routerLinkActive="active bg-primary rounded"
-       [routerLinkActiveOptions]="{exact: false}"
-       class="nav-link text-white px-3 py-2 rounded">
-      <i class="bi bi-house-door me-2"></i>Inicio
-    </a>
-
-    <!-- Separador -->
-    <div class="border-top border-secondary my-2"></div>
-
-    <!-- Tickets - Admin y Agente -->
-    @if (esAdminOAgente()) {
-      <a routerLink="/tickets"
-         routerLinkActive="active bg-primary rounded"
-         class="nav-link text-white px-3 py-2 rounded">
-        <i class="bi bi-ticket-perforated me-2"></i>Todos los Tickets
-      </a>
-    }
-
     <!-- Mis Tickets - Todos -->
-    <a routerLink="/tickets"
-       [queryParams]="{filtro: 'mios'}"
-       routerLinkActive="active bg-primary rounded"
-       class="nav-link text-white px-3 py-2 rounded">
+    <a (click)="navegarA('/mis-tickets', $event)"
+       [class.active]="router.url === '/mis-tickets'"
+       class="nav-link text-white px-3 py-2 rounded"
+       style="cursor: pointer;">
       <i class="bi bi-person me-2"></i>Mis Tickets
     </a>
 
     <!-- Nuevo Ticket - Todos -->
-    <a routerLink="/tickets/nuevo"
-       routerLinkActive="active bg-primary rounded"
-       class="nav-link text-white px-3 py-2 rounded">
+    <a (click)="navegarA('/tickets/nuevo', $event)"
+       [class.active]="router.url === '/tickets/nuevo'"
+       class="nav-link text-white px-3 py-2 rounded"
+       style="cursor: pointer;">
       <i class="bi bi-plus-circle me-2"></i>Nuevo Ticket
     </a>
 
     <!-- Separador -->
     <div class="border-top border-secondary my-2"></div>
 
+    <!-- Todos los Tickets - Solo Admin y Agente -->
+    @if (esAdminOAgente()) {
+      <a (click)="navegarA('/tickets', $event)"
+         [class.active]="router.url === '/tickets'"
+         class="nav-link text-white px-3 py-2 rounded"
+         style="cursor: pointer;">
+        <i class="bi bi-ticket-perforated me-2"></i>Todos los Tickets
+      </a>
+    }
+
     <!-- Gestión de Usuarios - Admin y Agente -->
     @if (esAdminOAgente()) {
-      <a routerLink="/usuarios"
-         routerLinkActive="active bg-primary rounded"
-         class="nav-link text-white px-3 py-2 rounded">
+      <a (click)="navegarA('/usuarios', $event)"
+         [class.active]="router.url === '/usuarios'"
+         class="nav-link text-white px-3 py-2 rounded"
+         style="cursor: pointer;">
         <i class="bi bi-people me-2"></i>Usuarios
       </a>
     }
 
     <!-- Nuevo Usuario - Solo Admin -->
     @if (esAdmin()) {
-      <a routerLink="/usuarios/nuevo"
-         routerLinkActive="active bg-primary rounded"
-         class="nav-link text-white px-3 py-2 rounded">
+      <a (click)="navegarA('/usuarios/nuevo', $event)"
+         [class.active]="router.url === '/usuarios/nuevo'"
+         class="nav-link text-white px-3 py-2 rounded"
+         style="cursor: pointer;">
         <i class="bi bi-person-plus me-2"></i>Nuevo Usuario
       </a>
     }
-
-    <!-- Separador -->
-    @if (esAdmin()) {
-      <div class="border-top border-secondary my-2"></div>
-    }
-
   </nav>
 
   <!-- Footer del sidebar -->
   <div class="mt-auto p-3 border-top border-secondary">
+    <div class="d-flex align-items-center gap-2 mb-2">
+      <i class="bi bi-person-circle fs-5"></i>
+      <div>
+        <small class="d-block text-white">{{ username }}</small>
+        <small class="text-muted">{{ rolFormateado }}</small>
+      </div>
+    </div>
     <small class="text-muted d-block text-center">
       <i class="bi bi-shield-check me-1"></i>
       v1.0.0

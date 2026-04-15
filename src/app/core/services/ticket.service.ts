@@ -13,9 +13,9 @@ export class TicketService {
 
   constructor(private http: HttpClient) {}
 
-  listar(params: { pagina: number; size: number; busqueda: string; estado: string; prioridad: string; }): Observable<ServiceResult<Ticket>> {
-    return this.http.get<ServiceResult<Ticket>>(this.url);
-  }
+  listar(): Observable<ServiceResult<Ticket>> {
+  return this.http.get<ServiceResult<Ticket>>(this.url);
+}
 
   obtenerPorId(id: number): Observable<ServiceResult<Ticket>> {
     return this.http.get<ServiceResult<Ticket>>(`${this.url}/${id}`);

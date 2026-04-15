@@ -1,1 +1,191 @@
-<p>ticket-detail works!</p>
+<div class="container-fluid">
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2 text-muted">Cargando ticket...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle me-2"></i>{{ errorMessage }}
+  </div>
+
+  <!-- Success -->
+  <div *ngIf="successMessage" class="alert alert-success">
+    <i class="bi bi-check-circle me-2"></i>{{ successMessage }}
+  </div>
+
+  <div *ngIf="!cargando && ticket">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h4 class="fw-bold mb-1">
+          <i class="bi bi-ticket-detailed me-2 text-primary"></i>
+          {{ ticket.titulo }}
+        </h4>
+        <small class="text-muted">
+          Creado por <strong>{{ ticket.creador }}</strong> el
+          {{ ticket.fechacreacion | date:'dd/MM/yyyy HH:mm' }}
+        </small>
+      </div>
+      <a routerLink="/tickets" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i>Volver
+      </a>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Columna izquierda — Detalle -->
+      <div class="col-lg-8">
+
+        <!-- Info del ticket -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white fw-semibold">
+            <i class="bi bi-info-circle me-2 text-primary"></i>Información del Ticket
+          </div>
+          <div class="card-body">
+
+            <p class="mb-3">{{ ticket.descripcion }}</p>
+
+            <div class="row g-3">
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Prioridad</small>
+                <span [class]="getBadgePrioridad(ticket.prioridad)">
+                  {{ ticket.prioridad }}
+                </span>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Estado</small>
+                <span [class]="getBadgeEstado(ticket.estadoticket)">
+                  {{ ticket.estadoticket }}
+                </span>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Creador</small>
+                <span class="fw-semibold">
+                  <i class="bi bi-person me-1"></i>{{ ticket.creador || '—' }}
+                </span>
+              </div>
+              <div class="col-sm-6">
+                <small class="text-muted d-block">Asignado a</small>
+                <span class="fw-semibold">
+                  <i class="bi bi-person-check me-1 text-success"></i>
+                  {{ ticket.asignado || 'Sin asignar' }}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Comentarios -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white fw-semibold d-flex justify-content-between">
+            <span>
+              <i class="bi bi-chat-dots me-2 text-primary"></i>Comentarios
+            </span>
+            <span class="badge bg-primary rounded-pill">{{ comentarios.length }}</span>
+          </div>
+          <div class="card-body">
+
+            <!-- Cargando comentarios -->
+            <div *ngIf="cargandoComentarios" class="text-center py-3">
+              <div class="spinner-border spinner-border-sm text-primary"></div>
+            </div>
+
+            <!-- Lista comentarios -->
+            <div *ngIf="!cargandoComentarios">
+              <div *ngIf="comentarios.length === 0" class="text-center text-muted py-3">
+                <i class="bi bi-chat fs-3"></i>
+                <p class="mt-1 mb-0">Sin comentarios aún</p>
+              </div>
+
+              <div *ngFor="let c of comentarios" class="d-flex gap-3 mb-3">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center
+                            justify-content-center flex-shrink-0"
+                     style="width:38px; height:38px; font-size:0.85rem;">
+                  {{ c.autor ? c.autor[0].toUpperCase() : '?' }}
+                </div>
+                <div class="flex-grow-1">
+                  <div class="bg-light rounded p-3">
+                    <div class="d-flex justify-content-between mb-1">
+                      <span class="fw-semibold small">{{ c.autor }}</span>
+                      <small class="text-muted">
+                        {{ c.fechacreacion | date:'dd/MM/yyyy HH:mm' }}
+                      </small>
+                    </div>
+                    <p class="mb-0 small">{{ c.mensaje }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Agregar comentario -->
+            <div class="mt-3 border-top pt-3">
+              <label class="form-label fw-semibold small">
+                <i class="bi bi-plus-circle me-1"></i>Agregar comentario
+              </label>
+              <textarea
+                class="form-control mb-2"
+                rows="3"
+                placeholder="Escribe tu comentario..."
+                [(ngModel)]="nuevoComentario">
+              </textarea>
+              <button class="btn btn-primary btn-sm"
+                      (click)="agregarComentario()"
+                      [disabled]="!nuevoComentario.trim()">
+                <i class="bi bi-send me-1"></i>Enviar
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Columna derecha — Acciones (solo ADMIN/AGENTE) -->
+      <div class="col-lg-4" *ngIf="esAdminOAgente()">
+
+        <!-- Cambiar Estado -->
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-white fw-semibold">
+            <i class="bi bi-arrow-repeat me-2 text-warning"></i>Cambiar Estado
+          </div>
+          <div class="card-body">
+            <select class="form-select mb-3" [(ngModel)]="estadoSeleccionado">
+              <option *ngFor="let e of estados" [value]="e">{{ e }}</option>
+            </select>
+            <button class="btn btn-warning w-100 btn-sm fw-semibold"
+                    (click)="cambiarEstado()">
+              <i class="bi bi-check2 me-1"></i>Actualizar Estado
+            </button>
+          </div>
+        </div>
+
+        <!-- Asignar Agente -->
+        <div class="card border-0 shadow-sm">
+          <div class="card-header bg-white fw-semibold">
+            <i class="bi bi-person-plus me-2 text-success"></i>Asignar Agente
+          </div>
+          <div class="card-body">
+            <select class="form-select mb-3" [(ngModel)]="agenteSeleccionado">
+              <option [value]="null">Seleccionar agente...</option>
+              <option *ngFor="let u of usuarios" [value]="u.id">
+                {{ u.nombre }} {{ u.apellidopaterno }} ({{ u.username }})
+              </option>
+            </select>
+            <button class="btn btn-success w-100 btn-sm fw-semibold"
+                    (click)="asignarTicket()"
+                    [disabled]="!agenteSeleccionado">
+              <i class="bi bi-person-check me-1"></i>Asignar
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
