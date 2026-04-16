@@ -1,1 +1,164 @@
-<p>usuario-form works!</p>
+<div class="container-fluid">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="fw-bold mb-1">
+        <i class="bi bi-person-plus me-2 text-primary"></i>
+        {{ modoEdicion ? 'Editar Usuario' : 'Nuevo Usuario' }}
+      </h4>
+      <small class="text-muted">
+        {{ modoEdicion ? 'Actualiza los datos del usuario' : 'Completa el formulario para crear un usuario' }}
+      </small>
+    </div>
+    <a routerLink="/usuarios" class="btn btn-outline-secondary btn-sm">
+      <i class="bi bi-arrow-left me-1"></i>Volver
+    </a>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando && modoEdicion" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2 text-muted">Cargando datos...</p>
+  </div>
+
+  <div *ngIf="!cargando || !modoEdicion">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm">
+
+          <div class="card-header bg-primary text-white">
+            <i class="bi bi-person me-2"></i>
+            {{ modoEdicion ? 'Editar datos' : 'Datos del Usuario' }}
+          </div>
+
+          <div class="card-body p-4">
+
+            <!-- Éxito -->
+            <div *ngIf="successMessage"
+                 class="alert alert-success d-flex align-items-center gap-2">
+              <i class="bi bi-check-circle-fill"></i>
+              <span>{{ successMessage }}</span>
+            </div>
+
+            <!-- Error -->
+            <div *ngIf="errorMessage"
+                 class="alert alert-danger d-flex align-items-center gap-2">
+              <i class="bi bi-exclamation-triangle-fill"></i>
+              <span>{{ errorMessage }}</span>
+            </div>
+
+            <!-- Nombre -->
+            <div class="row g-3 mb-3">
+              <div class="col-sm-4">
+                <label class="form-label fw-semibold">
+                  Nombre <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control"
+                       placeholder="Nombre"
+                       [(ngModel)]="nombre">
+              </div>
+              <div class="col-sm-4">
+                <label class="form-label fw-semibold">
+                  Apellido Paterno <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control"
+                       placeholder="Apellido paterno"
+                       [(ngModel)]="apellidopaterno">
+              </div>
+              <div class="col-sm-4">
+                <label class="form-label fw-semibold">Apellido Materno</label>
+                <input type="text" class="form-control"
+                       placeholder="Apellido materno"
+                       [(ngModel)]="apellidomaterno">
+              </div>
+            </div>
+
+            <!-- Correo -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-envelope me-1"></i>Correo
+                <span class="text-danger">*</span>
+              </label>
+              <input type="email" class="form-control"
+                     placeholder="correo@ejemplo.com"
+                     [(ngModel)]="correo">
+            </div>
+
+            <!-- Username -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-person me-1"></i>Username
+                <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control"
+                     placeholder="nombre de usuario"
+                     [(ngModel)]="username"
+                     [disabled]="modoEdicion">
+              <small *ngIf="modoEdicion" class="text-muted">
+                El username no se puede modificar
+              </small>
+            </div>
+
+            <!-- Password solo en creación -->
+            <div class="mb-3" *ngIf="!modoEdicion">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-lock me-1"></i>Contraseña
+                <span class="text-danger">*</span>
+              </label>
+              <input type="password" class="form-control"
+                     placeholder="Contraseña"
+                     [(ngModel)]="password">
+            </div>
+
+            <!-- Roles solo en creación -->
+            <div class="mb-4" *ngIf="!modoEdicion">
+              <label class="form-label fw-semibold">
+                <i class="bi bi-shield me-1"></i>Roles
+                <span class="text-danger">*</span>
+              </label>
+              <div class="d-flex gap-3">
+                <div *ngFor="let rol of rolesDisponibles"
+                     class="rol-option flex-grow-1 text-center p-3 rounded border"
+                     [class.rol-selected]="tieneRol(rol.id)"
+                     (click)="toggleRol(rol.id)"
+                     style="cursor: pointer;">
+                  <i class="bi d-block fs-4 mb-1"
+                     [class.bi-shield-fill-check]="rol.nombre === 'ADMIN'"
+                     [class.bi-headset]="rol.nombre === 'AGENTE'"
+                     [class.bi-person-fill]="rol.nombre === 'USER'"
+                     [class.text-primary]="tieneRol(rol.id)"
+                     [class.text-muted]="!tieneRol(rol.id)">
+                  </i>
+                  <small class="fw-semibold">{{ rol.nombre }}</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botón -->
+            <div class="d-flex gap-2">
+              <button class="btn btn-primary flex-grow-1"
+                      (click)="guardar()"
+                      [disabled]="cargando">
+                <span *ngIf="cargando">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Guardando...
+                </span>
+                <span *ngIf="!cargando">
+                  <i class="bi bi-save me-2"></i>
+                  {{ modoEdicion ? 'Actualizar' : 'Crear Usuario' }}
+                </span>
+              </button>
+
+              <a routerLink="/usuarios" class="btn btn-outline-secondary">
+                <i class="bi bi-x me-1"></i>Cancelar
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

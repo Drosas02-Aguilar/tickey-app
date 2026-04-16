@@ -1,1 +1,143 @@
-<p>usuario-list works!</p>
+<div class="container-fluid">
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4 class="fw-bold mb-1">
+        <i class="bi bi-people me-2 text-primary"></i>Usuarios
+      </h4>
+      <small class="text-muted">Gestión de usuarios del sistema</small>
+    </div>
+    <a *ngIf="esAdmin()" routerLink="/usuarios/nuevo" class="btn btn-primary">
+      <i class="bi bi-person-plus me-2"></i>Nuevo Usuario
+    </a>
+  </div>
+
+  <!-- Cargando -->
+  <div *ngIf="cargando" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2 text-muted">Cargando usuarios...</p>
+  </div>
+
+  <!-- Éxito -->
+  <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center gap-2">
+    <i class="bi bi-check-circle-fill"></i>
+    <span>{{ successMessage }}</span>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center gap-2">
+    <i class="bi bi-exclamation-triangle-fill"></i>
+    <span>{{ errorMessage }}</span>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!cargando && usuarios.length > 0" class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+
+          <thead class="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Nombre</th>
+              <th>Username</th>
+              <th>Correo</th>
+              <th>Roles</th>
+              <th class="text-center">Estado</th>
+              <th class="text-center">Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let u of usuarios">
+
+              <td class="text-muted fw-semibold">{{ u.id }}</td>
+
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="rounded-circle bg-primary text-white d-flex
+                              align-items-center justify-content-center flex-shrink-0"
+                       style="width:36px; height:36px; font-size:0.85rem;">
+                    {{ u.nombre ? u.nombre[0].toUpperCase() : '?' }}
+                  </div>
+                  <div>
+                    <span class="fw-semibold d-block">
+                      {{ u.nombre }} {{ u.apellidopaterno }} {{ u.apellidomaterno }}
+                    </span>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <i class="bi bi-person me-1 text-muted"></i>{{ u.username }}
+              </td>
+
+              <td>
+                <i class="bi bi-envelope me-1 text-muted"></i>{{ u.correo }}
+              </td>
+
+              <td>
+                <span *ngFor="let rol of u.roles"
+                      class="badge bg-secondary me-1">
+                  {{ rol }}
+                </span>
+              </td>
+
+              <td class="text-center">
+                <span *ngIf="u.activo" class="badge bg-success">
+                  <i class="bi bi-check-circle me-1"></i>Activo
+                </span>
+                <span *ngIf="!u.activo" class="badge bg-danger">
+                  <i class="bi bi-x-circle me-1"></i>Inactivo
+                </span>
+              </td>
+
+              <td class="text-center">
+                <div class="d-flex gap-1 justify-content-center">
+
+                  <!-- Ver detalle -->
+                  <a [routerLink]="['/usuarios', u.id, 'editar']"
+                     class="btn btn-sm btn-outline-primary"
+                     title="Editar">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+
+                  <!-- Activar -->
+                  <button *ngIf="!u.activo && esAdminOAgente()"
+                          class="btn btn-sm btn-outline-success"
+                          title="Activar"
+                          (click)="activar(u.id)">
+                    <i class="bi bi-check-circle"></i>
+                  </button>
+
+                  <!-- Desactivar -->
+                  <button *ngIf="u.activo && esAdminOAgente()"
+                          class="btn btn-sm btn-outline-danger"
+                          title="Desactivar"
+                          (click)="desactivar(u.id)">
+                    <i class="bi bi-x-circle"></i>
+                  </button>
+
+                </div>
+              </td>
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sin usuarios -->
+  <div *ngIf="!cargando && usuarios.length === 0 && !errorMessage"
+       class="text-center py-5">
+    <i class="bi bi-people fs-1 text-muted"></i>
+    <p class="mt-2 text-muted">No hay usuarios registrados</p>
+    <a *ngIf="esAdmin()" routerLink="/usuarios/nuevo" class="btn btn-primary">
+      <i class="bi bi-person-plus me-2"></i>Crear primer usuario
+    </a>
+  </div>
+
+</div>

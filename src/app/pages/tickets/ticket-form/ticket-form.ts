@@ -1,14 +1,17 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { TicketService } from '../../../core/services/ticket.service';
-import { AuthService } from '../../../core/services/auth.service';
+import { CommonModule } from "@angular/common";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { TicketService } from "../../../core/services/ticket.service";
+import { AuthService } from "../../../core/services/auth.service";
+import { Router, RouterLink } from "@angular/router";
+
+export type Prioridad = 'ALTA' | 'MEDIA' | 'BAJA';
 
 @Component({
   selector: 'app-ticket-form',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
+
   templateUrl: './ticket-form.html',
   styleUrl: './ticket-form.css'
 })
@@ -16,9 +19,9 @@ export class TicketForm implements OnInit {
 
   titulo: string = '';
   descripcion: string = '';
-  prioridad: 'ALTA' | 'MEDIA' | 'BAJA' | undefined = undefined;
+  prioridad: Prioridad | undefined = undefined;
 
-  prioridades: string[] = ['ALTA', 'MEDIA', 'BAJA'];
+  prioridades: Prioridad[] = ['ALTA', 'MEDIA', 'BAJA'];
 
   cargando: boolean = false;
   errorMessage: string = '';
@@ -55,7 +58,6 @@ export class TicketForm implements OnInit {
           this.successMessage = 'Ticket creado correctamente';
           this.cdr.detectChanges();
           setTimeout(() => {
-            // Redirigir según rol
             if (this.authService.tieneRol('ADMIN') || this.authService.tieneRol('AGENTE')) {
               this.router.navigate(['/tickets']);
             } else {
