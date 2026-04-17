@@ -1,27 +1,250 @@
-.card {
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.ta-form-wrap {
+  font-family: 'DM Sans', sans-serif;
+  padding: 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.ta-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ta-form-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1a1a2e;
+}
+
+.ta-form-sub {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* ===== CONTENEDOR DEL FORMULARIO ===== */
+.ta-form-container {
+  display: flex;
+  justify-content: center;
+}
+
+.ta-form-card {
+  background: #fff;
+  border: 0.5px solid #dee2e6;
   border-radius: 12px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 720px;
 }
 
-.card-header {
-  border-radius: 12px 12px 0 0 !important;
+.ta-form-card__header {
+  padding: 16px 24px;
+  background: #fafbfc;
+  border-bottom: 0.5px solid #edf0f2;
+  font-family: 'Syne', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  color: #1a1a2e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.rol-option {
-  transition: all 0.2s;
+.ta-form-card__body {
+  padding: 24px;
+}
+
+/* ===== GRID DEL FORMULARIO ===== */
+.ta-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 16px;
+  margin-bottom: 28px;
+}
+
+.ta-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.ta-field--full {
+  grid-column: 1 / -1;
+}
+
+.ta-field__label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #2c2c3a;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ta-field__label i {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.ta-required {
+  color: #a32d2d;
+  font-size: 14px;
+  margin-left: 2px;
+}
+
+.ta-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  border: 0.5px solid #dee2e6;
+  border-radius: 8px;
+  background: #fff;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+
+.ta-input:focus {
+  outline: none;
+  border-color: #4b4b6c;
+  box-shadow: 0 0 0 3px rgba(75, 75, 108, 0.1);
+}
+
+.ta-input:disabled {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.ta-field__hint {
+  font-size: 12px;
+  color: #8f8f9a;
+  margin-top: 4px;
+}
+
+/* ===== SECCIÓN DE ROLES ===== */
+.ta-roles-section {
+  margin-bottom: 28px;
+}
+
+.ta-roles-section__label {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: #2c2c3a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ta-roles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ta-role-card {
+  background: #fff;
+  border: 0.5px solid #dee2e6;
   border-radius: 10px;
+  padding: 20px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
 }
 
-.rol-option:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+.ta-role-card:hover {
+  background: #fafbfc;
+  border-color: #adb5bd;
 }
 
-.rol-selected {
-  border-color: #0d6efd !important;
-  background-color: rgba(13, 110, 253, 0.08);
+.ta-role-card--selected {
+  background: #f0f2ff;
+  border-color: #4b4b6c;
 }
 
-input.form-control:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+.ta-role-card__icon {
+  font-size: 28px;
+  margin-bottom: 8px;
+  color: #6c757d;
+}
+
+.ta-role-card--selected .ta-role-card__icon {
+  color: #1a1a2e;
+}
+
+.ta-role-card__name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a2e;
+}
+
+.ta-role-card__check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #4b4b6c;
+  font-size: 18px;
+}
+
+/* ===== BOTONES DE ACCIÓN ===== */
+.ta-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* ===== SPINNER INLINE (para botones) ===== */
+.ta-spinner--inline {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: ta-spin 0.8s linear infinite;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ===== ADAPTACIONES RESPONSIVE ===== */
+@media (max-width: 640px) {
+  .ta-form-wrap {
+    padding: 1rem;
+  }
+
+  .ta-form-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ta-roles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ta-form-actions {
+    flex-direction: column;
+  }
+
+  .ta-input--error {
+  border-color: #e53e3e !important;
+}
+
+.ta-field__error {
+  color: #e53e3e;
+  font-size: 0.78rem;
+  margin-top: 4px;
+  display: block;
+}
 }

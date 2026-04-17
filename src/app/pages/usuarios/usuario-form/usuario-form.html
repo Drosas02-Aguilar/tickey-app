@@ -1,164 +1,204 @@
-<div class="container-fluid">
+<div class="ta-form-wrap">
 
   <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h4 class="fw-bold mb-1">
-        <i class="bi bi-person-plus me-2 text-primary"></i>
+  <div class="ta-form-header">
+    <div class="ta-form-header__main">
+      <h1 class="ta-form-title">
+        <i class="bi bi-person-plus"></i>
         {{ modoEdicion ? 'Editar Usuario' : 'Nuevo Usuario' }}
-      </h4>
-      <small class="text-muted">
+      </h1>
+      <p class="ta-form-sub">
         {{ modoEdicion ? 'Actualiza los datos del usuario' : 'Completa el formulario para crear un usuario' }}
-      </small>
+      </p>
     </div>
-    <a routerLink="/usuarios" class="btn btn-outline-secondary btn-sm">
-      <i class="bi bi-arrow-left me-1"></i>Volver
+    <a routerLink="/usuarios" class="ta-btn ta-btn--outline">
+      <i class="bi bi-arrow-left"></i> Volver al listado
     </a>
   </div>
 
   <!-- Cargando -->
-  <div *ngIf="cargando && modoEdicion" class="text-center py-5">
-    <div class="spinner-border text-primary"></div>
-    <p class="mt-2 text-muted">Cargando datos...</p>
+  <div *ngIf="cargando && modoEdicion" class="ta-loading">
+    <div class="ta-spinner"></div>
+    <p>Cargando datos del usuario...</p>
   </div>
 
-  <div *ngIf="!cargando || !modoEdicion">
-    <div class="row justify-content-center">
-      <div class="col-lg-7">
-        <div class="card border-0 shadow-sm">
+  <div *ngIf="formularioListo">
+    <div class="ta-form-container">
+      <div class="ta-form-card">
 
-          <div class="card-header bg-primary text-white">
-            <i class="bi bi-person me-2"></i>
-            {{ modoEdicion ? 'Editar datos' : 'Datos del Usuario' }}
+        <div class="ta-form-card__header">
+          <i class="bi bi-person"></i>
+          {{ modoEdicion ? 'Editar datos' : 'Datos del Usuario' }}
+        </div>
+
+        <div class="ta-form-card__body">
+
+          <div *ngIf="successMessage" class="ta-alert ta-alert--success">
+            <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
+          </div>
+          <div *ngIf="errorMessage" class="ta-alert ta-alert--error">
+            <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
           </div>
 
-          <div class="card-body p-4">
-
-            <!-- Éxito -->
-            <div *ngIf="successMessage"
-                 class="alert alert-success d-flex align-items-center gap-2">
-              <i class="bi bi-check-circle-fill"></i>
-              <span>{{ successMessage }}</span>
-            </div>
-
-            <!-- Error -->
-            <div *ngIf="errorMessage"
-                 class="alert alert-danger d-flex align-items-center gap-2">
-              <i class="bi bi-exclamation-triangle-fill"></i>
-              <span>{{ errorMessage }}</span>
-            </div>
+          <div class="ta-form-grid">
 
             <!-- Nombre -->
-            <div class="row g-3 mb-3">
-              <div class="col-sm-4">
-                <label class="form-label fw-semibold">
-                  Nombre <span class="text-danger">*</span>
-                </label>
-                <input type="text" class="form-control"
-                       placeholder="Nombre"
-                       [(ngModel)]="nombre">
-              </div>
-              <div class="col-sm-4">
-                <label class="form-label fw-semibold">
-                  Apellido Paterno <span class="text-danger">*</span>
-                </label>
-                <input type="text" class="form-control"
-                       placeholder="Apellido paterno"
-                       [(ngModel)]="apellidopaterno">
-              </div>
-              <div class="col-sm-4">
-                <label class="form-label fw-semibold">Apellido Materno</label>
-                <input type="text" class="form-control"
-                       placeholder="Apellido materno"
-                       [(ngModel)]="apellidomaterno">
-              </div>
-            </div>
-
-            <!-- Correo -->
-            <div class="mb-3">
-              <label class="form-label fw-semibold">
-                <i class="bi bi-envelope me-1"></i>Correo
-                <span class="text-danger">*</span>
-              </label>
-              <input type="email" class="form-control"
-                     placeholder="correo@ejemplo.com"
-                     [(ngModel)]="correo">
-            </div>
-
-            <!-- Username -->
-            <div class="mb-3">
-              <label class="form-label fw-semibold">
-                <i class="bi bi-person me-1"></i>Username
-                <span class="text-danger">*</span>
-              </label>
-              <input type="text" class="form-control"
-                     placeholder="nombre de usuario"
-                     [(ngModel)]="username"
-                     [disabled]="modoEdicion">
-              <small *ngIf="modoEdicion" class="text-muted">
-                El username no se puede modificar
+            <div class="ta-field">
+              <label class="ta-field__label">Nombre <span class="ta-required">*</span></label>
+              <input
+                type="text"
+                class="ta-input"
+                [class.ta-input--error]="errores['nombre']"
+                placeholder="Nombre"
+                [(ngModel)]="nombre"
+                (blur)="validarCampo('nombre')"
+              />
+              <small *ngIf="errores['nombre']" class="ta-field__error">
+                <i class="bi bi-exclamation-circle"></i> {{ errores['nombre'] }}
               </small>
             </div>
 
-            <!-- Password solo en creación -->
-            <div class="mb-3" *ngIf="!modoEdicion">
-              <label class="form-label fw-semibold">
-                <i class="bi bi-lock me-1"></i>Contraseña
-                <span class="text-danger">*</span>
-              </label>
-              <input type="password" class="form-control"
-                     placeholder="Contraseña"
-                     [(ngModel)]="password">
+            <!-- Apellido Paterno -->
+            <div class="ta-field">
+              <label class="ta-field__label">Apellido Paterno <span class="ta-required">*</span></label>
+              <input
+                type="text"
+                class="ta-input"
+                [class.ta-input--error]="errores['apellidopaterno']"
+                placeholder="Apellido paterno"
+                [(ngModel)]="apellidopaterno"
+                (blur)="validarCampo('apellidopaterno')"
+              />
+              <small *ngIf="errores['apellidopaterno']" class="ta-field__error">
+                <i class="bi bi-exclamation-circle"></i> {{ errores['apellidopaterno'] }}
+              </small>
             </div>
 
-            <!-- Roles solo en creación -->
-            <div class="mb-4" *ngIf="!modoEdicion">
-              <label class="form-label fw-semibold">
-                <i class="bi bi-shield me-1"></i>Roles
-                <span class="text-danger">*</span>
-              </label>
-              <div class="d-flex gap-3">
-                <div *ngFor="let rol of rolesDisponibles"
-                     class="rol-option flex-grow-1 text-center p-3 rounded border"
-                     [class.rol-selected]="tieneRol(rol.id)"
-                     (click)="toggleRol(rol.id)"
-                     style="cursor: pointer;">
-                  <i class="bi d-block fs-4 mb-1"
-                     [class.bi-shield-fill-check]="rol.nombre === 'ADMIN'"
-                     [class.bi-headset]="rol.nombre === 'AGENTE'"
-                     [class.bi-person-fill]="rol.nombre === 'USER'"
-                     [class.text-primary]="tieneRol(rol.id)"
-                     [class.text-muted]="!tieneRol(rol.id)">
-                  </i>
-                  <small class="fw-semibold">{{ rol.nombre }}</small>
-                </div>
-              </div>
+            <!-- Apellido Materno -->
+            <div class="ta-field">
+              <label class="ta-field__label">Apellido Materno</label>
+              <input
+                type="text"
+                class="ta-input"
+                [class.ta-input--error]="errores['apellidomaterno']"
+                placeholder="Apellido materno"
+                [(ngModel)]="apellidomaterno"
+                (blur)="validarCampo('apellidomaterno')"
+              />
+              <small *ngIf="errores['apellidomaterno']" class="ta-field__error">
+                <i class="bi bi-exclamation-circle"></i> {{ errores['apellidomaterno'] }}
+              </small>
             </div>
 
-            <!-- Botón -->
-            <div class="d-flex gap-2">
-              <button class="btn btn-primary flex-grow-1"
-                      (click)="guardar()"
-                      [disabled]="cargando">
-                <span *ngIf="cargando">
-                  <span class="spinner-border spinner-border-sm me-2"></span>
-                  Guardando...
-                </span>
-                <span *ngIf="!cargando">
-                  <i class="bi bi-save me-2"></i>
-                  {{ modoEdicion ? 'Actualizar' : 'Crear Usuario' }}
-                </span>
-              </button>
+            <!-- Correo -->
+            <div class="ta-field ta-field--full">
+              <label class="ta-field__label">
+                <i class="bi bi-envelope"></i> Correo electrónico <span class="ta-required">*</span>
+              </label>
+              <input
+                type="email"
+                class="ta-input"
+                [class.ta-input--error]="errores['correo']"
+                placeholder="correo@ejemplo.com"
+                [(ngModel)]="correo"
+                (blur)="validarCampo('correo')"
+              />
+              <small *ngIf="errores['correo']" class="ta-field__error">
+                <i class="bi bi-exclamation-circle"></i> {{ errores['correo'] }}
+              </small>
+            </div>
 
-              <a routerLink="/usuarios" class="btn btn-outline-secondary">
-                <i class="bi bi-x me-1"></i>Cancelar
-              </a>
+            <!-- Username -->
+            <div class="ta-field ta-field--full">
+              <label class="ta-field__label">
+                <i class="bi bi-person"></i> Nombre de usuario <span class="ta-required">*</span>
+              </label>
+              <input
+                type="text"
+                class="ta-input"
+                [class.ta-input--error]="errores['username']"
+                placeholder="nombre de usuario"
+                [(ngModel)]="username"
+                [disabled]="modoEdicion"
+                (blur)="validarCampo('username')"
+              />
+              <small *ngIf="modoEdicion" class="ta-field__hint">
+                El nombre de usuario no se puede modificar
+              </small>
+              <small *ngIf="errores['username']" class="ta-field__error">
+                <i class="bi bi-exclamation-circle"></i> {{ errores['username'] }}
+              </small>
+            </div>
+
+            <!-- Contraseña (solo creación) -->
+            <div class="ta-field ta-field--full" *ngIf="!modoEdicion">
+              <label class="ta-field__label">
+                <i class="bi bi-lock"></i> Contraseña <span class="ta-required">*</span>
+              </label>
+              <input
+                type="password"
+                class="ta-input"
+                [class.ta-input--error]="errores['password']"
+                placeholder="Mínimo 8 caracteres"
+                [(ngModel)]="password"
+                (blur)="validarCampo('password')"
+              />
+              <small *ngIf="errores['password']" class="ta-field__error">
+                <i class="bi bi-exclamation-circle"></i> {{ errores['password'] }}
+              </small>
             </div>
 
           </div>
+
+          <!-- Roles (solo creación) -->
+          <div class="ta-roles-section" *ngIf="!modoEdicion">
+            <label class="ta-roles-section__label">
+              <i class="bi bi-shield"></i> Roles del usuario <span class="ta-required">*</span>
+            </label>
+            <div class="ta-roles-grid">
+              <div
+                *ngFor="let rol of rolesDisponibles"
+                class="ta-role-card"
+                [class.ta-role-card--selected]="tieneRol(rol.id)"
+                (click)="toggleRol(rol.id)"
+              >
+                <div class="ta-role-card__icon">
+                  <i class="bi"
+                    [class.bi-shield-fill-check]="rol.nombre === 'ADMIN'"
+                    [class.bi-headset]="rol.nombre === 'AGENTE'"
+                    [class.bi-person-fill]="rol.nombre === 'USER'"
+                  ></i>
+                </div>
+                <div class="ta-role-card__name">{{ rol.nombre }}</div>
+                <div class="ta-role-card__check" *ngIf="tieneRol(rol.id)">
+                  <i class="bi bi-check-circle-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acciones -->
+          <div class="ta-form-actions">
+            <button
+              class="ta-btn ta-btn--primary ta-btn--block"
+              (click)="guardar()"
+              [disabled]="cargando"
+            >
+              <span *ngIf="cargando">
+                <span class="ta-spinner ta-spinner--inline"></span> Guardando...
+              </span>
+              <span *ngIf="!cargando">
+                <i class="bi bi-save"></i>
+                {{ modoEdicion ? 'Actualizar Usuario' : 'Crear Usuario' }}
+              </span>
+            </button>
+            <a routerLink="/usuarios" class="ta-btn ta-btn--outline">
+              <i class="bi bi-x"></i> Cancelar
+            </a>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
-
 </div>

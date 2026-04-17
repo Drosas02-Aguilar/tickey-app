@@ -1,15 +1,338 @@
-.card {
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Sans:wght@400;500&display=swap');
+
+/* Contenedor principal */
+.ta-mis-tickets-wrap {
+  font-family: 'DM Sans', sans-serif;
+  padding: 1.5rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.ta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ta-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1a1a2e;
+}
+
+.ta-title i {
+  color: #4b4b6c;
+}
+
+.ta-sub {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Grid de tarjetas */
+.ta-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-top: 1.5rem;
+}
+
+/* Tarjeta individual */
+.ta-ticket-card {
+  background: #fff;
+  border: 0.5px solid #dee2e6;
   border-radius: 12px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  display: flex;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  height: 100%;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
+.ta-ticket-card:hover {
+  border-color: #adb5bd;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
-.badge {
-  font-size: 0.75rem;
-  padding: 0.4em 0.7em;
-  border-radius: 6px;
+/* Acento de color por prioridad */
+.ta-card-accent {
+  width: 4px;
+  flex-shrink: 0;
+}
+
+.ta-card-accent--alta {
+  background: #E24B4A;
+}
+
+.ta-card-accent--media {
+  background: #EF9F27;
+}
+
+.ta-card-accent--baja {
+  background: #639922;
+}
+
+/* Contenido interno */
+.ta-card-inner {
+  padding: 1.2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cabecera de tarjeta */
+.ta-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ta-card-id {
+  font-size: 11px;
+  color: #adb5bd;
+  font-family: 'Syne', sans-serif;
+  letter-spacing: 0.3px;
+}
+
+/* Badge de prioridad (estilo coherente) */
+.ta-badge--prioridad {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.ta-badge--alta {
+  background: #fbe9e9;
+  color: #a32d2d;
+}
+
+.ta-badge--media {
+  background: #faeeda;
+  color: #854f0b;
+}
+
+.ta-badge--baja {
+  background: #eaf3de;
+  color: #3b6d11;
+}
+
+/* Título */
+.ta-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #1a1a2e;
+  line-height: 1.3;
+}
+
+/* Descripción */
+.ta-card-desc {
+  font-size: 13px;
+  color: #5a5a6e;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* Detalles en grid */
+.ta-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.ta-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.ta-detail-item i {
+  font-size: 10px;
+  color: #8f8f9a;
+  width: 16px;
+  text-align: center;
+}
+
+.ta-detail-label {
+  color: #6c757d;
+  min-width: 65px;
+}
+
+.ta-detail-value {
+  font-weight: 500;
+  color: #2c2c3a;
+}
+
+/* Badge de estado */
+.ta-status-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.ta-status-badge--abierto {
+  background: #e6f1fb;
+  color: #185fa5;
+}
+
+.ta-status-badge--proceso {
+  background: #faeeda;
+  color: #854f0b;
+}
+
+.ta-status-badge--resuelto {
+  background: #eaf3de;
+  color: #3b6d11;
+}
+
+.ta-status-badge--cerrado {
+  background: #f1efe8;
+  color: #5f5e5a;
+}
+
+/* Footer con botón */
+.ta-card-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 0.5px solid #edf0f2;
+}
+
+/* ===== BOTONES (reutilizados de tu sistema) ===== */
+.ta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.ta-btn--primary {
+  background: #1a1a2e;
+  color: white;
+  border-color: #1a1a2e;
+}
+
+.ta-btn--primary:hover {
+  background: #2e2e4a;
+  border-color: #2e2e4a;
+}
+
+.ta-btn--outline {
+  border-color: #dee2e6;
+  color: #1a1a2e;
+  background: white;
+}
+
+.ta-btn--outline:hover {
+  background: #f8f9fa;
+}
+
+.ta-btn--block {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ===== ESTADOS DE CARGA Y VACÍO ===== */
+.ta-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  color: #6c757d;
+  gap: 12px;
+}
+
+.ta-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e9ecef;
+  border-top-color: #1a1a2e;
+  border-radius: 50%;
+  animation: ta-spin 0.8s linear infinite;
+}
+
+@keyframes ta-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ta-empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #6c757d;
+}
+
+.ta-empty-state i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+  display: block;
+}
+
+.ta-empty-state p {
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+/* Alerta */
+.ta-alert {
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0.5px solid transparent;
+}
+
+.ta-alert--warning {
+  background: #fff3cd;
+  border-color: #ffe69c;
+  color: #856404;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ta-mis-tickets-wrap {
+    padding: 1rem;
+  }
+
+  .ta-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ta-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ta-btn--primary {
+    justify-content: center;
+  }
 }

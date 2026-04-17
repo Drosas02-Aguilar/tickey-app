@@ -1,126 +1,122 @@
-<div class="container-fluid">
+<div class="ta-wrap">
 
-  <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <!-- HEADER -->
+  <div class="ta-header">
     <div>
-      <h4 class="fw-bold mb-1">
-        <i class="bi bi-plus-circle me-2 text-primary"></i>Nuevo Ticket
-      </h4>
-      <small class="text-muted">Completa el formulario para crear un ticket</small>
+      <h4 class="ta-title">Nuevo ticket</h4>
+      <small class="ta-sub">Completa el formulario para crear un ticket</small>
     </div>
-    <a routerLink="/tickets" class="btn btn-outline-secondary btn-sm">
-      <i class="bi bi-arrow-left me-1"></i>Volver
-    </a>
+
+    <!-- En lugar de routerLink="/tickets" o routerLink="/usuarios" -->
+<a [routerLink]="rutaVolver" class="ta-btn ta-btn--outline">
+  <i class="bi bi-arrow-left"></i> Volver
+</a>
   </div>
 
-  <!-- Card formulario -->
-  <div class="row justify-content-center">
-    <div class="col-lg-7">
-      <div class="card border-0 shadow-sm">
+  <!-- FORM CARD -->
+  <div class="ta-form">
 
-        <div class="card-header bg-primary text-white">
-          <i class="bi bi-ticket me-2"></i>Información del Ticket
-        </div>
-
-        <div class="card-body p-4">
-
-          <!-- Éxito -->
-          <div *ngIf="successMessage" class="alert alert-success d-flex align-items-center gap-2">
-            <i class="bi bi-check-circle-fill"></i>
-            <span>{{ successMessage }}</span>
-          </div>
-
-          <!-- Error -->
-          <div *ngIf="errorMessage" class="alert alert-danger d-flex align-items-center gap-2">
-            <i class="bi bi-exclamation-triangle-fill"></i>
-            <span>{{ errorMessage }}</span>
-          </div>
-
-          <!-- Titulo -->
-          <div class="mb-3">
-            <label class="form-label fw-semibold">
-              <i class="bi bi-fonts me-1"></i>Título
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Describe brevemente el problema"
-              [(ngModel)]="titulo"
-              maxlength="100">
-            <small class="text-muted">{{ titulo.length }}/100 caracteres</small>
-          </div>
-
-          <!-- Descripcion -->
-          <div class="mb-3">
-            <label class="form-label fw-semibold">
-              <i class="bi bi-text-paragraph me-1"></i>Descripción
-              <span class="text-danger">*</span>
-            </label>
-            <textarea
-              class="form-control"
-              rows="5"
-              placeholder="Describe detalladamente el problema, pasos para reproducirlo, etc."
-              [(ngModel)]="descripcion"
-              maxlength="500">
-            </textarea>
-            <small class="text-muted">{{ descripcion.length }}/500 caracteres</small>
-          </div>
-
-          <!-- Prioridad -->
-          <div class="mb-4">
-            <label class="form-label fw-semibold">
-              <i class="bi bi-flag me-1"></i>Prioridad
-              <span class="text-danger">*</span>
-            </label>
-            <div class="d-flex gap-3">
-              <div *ngFor="let p of prioridades"
-                   class="prioridad-option flex-grow-1 text-center p-3 rounded border cursor-pointer"
-                   [class.selected-alta]="prioridad === p && p === 'ALTA'"
-                   [class.selected-media]="prioridad === p && p === 'MEDIA'"
-                   [class.selected-baja]="prioridad === p && p === 'BAJA'"
-                   [class.border-secondary]="prioridad !== p"
-                   (click)="prioridad = p"
-                   style="cursor: pointer;">
-                <i class="bi d-block fs-4 mb-1"
-                   [class.bi-exclamation-circle-fill]="p === 'ALTA'"
-                   [class.bi-dash-circle-fill]="p === 'MEDIA'"
-                   [class.bi-check-circle-fill]="p === 'BAJA'"
-                   [class.text-danger]="p === 'ALTA'"
-                   [class.text-warning]="p === 'MEDIA'"
-                   [class.text-success]="p === 'BAJA'">
-                </i>
-                <small class="fw-semibold">{{ p }}</small>
-              </div>
-            </div>
-          </div>
-
-          <!-- Botones -->
-          <div class="d-flex gap-2">
-            <button
-              class="btn btn-primary flex-grow-1"
-              (click)="crearTicket()"
-              [disabled]="cargando || !titulo.trim() || !descripcion.trim() || !prioridad">
-              <span *ngIf="cargando">
-                <span class="spinner-border spinner-border-sm me-2"></span>
-                Creando...
-              </span>
-              <span *ngIf="!cargando">
-                <i class="bi bi-send me-2"></i>Crear Ticket
-              </span>
-            </button>
-
-            <button
-              class="btn btn-outline-secondary"
-              (click)="limpiarFormulario()"
-              [disabled]="cargando">
-              <i class="bi bi-arrow-clockwise me-1"></i>Limpiar
-            </button>
-          </div>
-
-        </div>
+    <!-- ALERTAS -->
+    @if (successMessage) {
+      <div class="ta-alert success">
+        <span>✔</span>
+        <span>{{ successMessage }}</span>
       </div>
+    }
+
+    @if (errorMessage) {
+      <div class="ta-alert error">
+        <span>⚠</span>
+        <span>{{ errorMessage }}</span>
+      </div>
+    }
+
+    <!-- TÍTULO -->
+   <div class="ta-group">
+  <label class="ta-label">Título <span>*</span></label>
+  <input
+    type="text"
+    class="ta-input"
+    [class.ta-input--error]="errores['titulo']"
+    placeholder="Ej. Error al iniciar sesión"
+    [(ngModel)]="titulo"
+    (blur)="validarCampo('titulo')"
+    maxlength="100">
+  <div class="ta-hint">{{ titulo.length }} / 100 caracteres</div>
+  <small *ngIf="errores['titulo']" class="ta-field__error">
+    <i class="bi bi-exclamation-circle"></i> {{ errores['titulo'] }}
+  </small>
+</div>
+
+
+    <!-- DESCRIPCIÓN -->
+ <div class="ta-group">
+  <label class="ta-label">Descripción <span>*</span></label>
+  <textarea
+    class="ta-input ta-textarea"
+    rows="5"
+    placeholder="Describe el problema..."
+    [(ngModel)]="descripcion"
+    (blur)="validarCampo('descripcion')"
+    maxlength="500">
+  </textarea>
+  <div class="ta-hint">{{ descripcion.length }} / 500 caracteres</div>
+  <small *ngIf="errores['descripcion']" class="ta-field__error">
+    <i class="bi bi-exclamation-circle"></i> {{ errores['descripcion'] }}
+  </small>
+</div>
+
+    <!-- PRIORIDAD -->
+   <div class="ta-group">
+  <label class="ta-label">Prioridad <span>*</span></label>
+  <div class="ta-priority">
+    @for (p of prioridades; track p) {
+      <div
+        class="ta-priority-item"
+        [class.active]="prioridad === p"
+        [ngClass]="p.toLowerCase()"
+        (click)="prioridad = p; errores['prioridad'] = ''">
+        <span class="ta-dot" [ngClass]="p.toLowerCase()"></span>
+        <div>{{ p }}</div>
+        <small class="ta-priority-desc">
+          @if (p === 'ALTA') { Impacto crítico }
+          @if (p === 'MEDIA') { Impacto medio }
+          @if (p === 'BAJA') { Impacto bajo }
+        </small>
+      </div>
+    }
+  </div>
+  <small *ngIf="errores['prioridad']" class="ta-field__error">
+    <i class="bi bi-exclamation-circle"></i> {{ errores['prioridad'] }}
+  </small>
+</div>
+
+    <!-- ACCIONES -->
+    <div class="ta-actions">
+
+      <button
+        class="ta-btn ta-btn-primary"
+        (click)="crearTicket()"
+        [disabled]="cargando || !titulo.trim() || !descripcion.trim() || !prioridad">
+
+        @if (cargando) {
+          <span class="spinner-border spinner-border-sm"></span>
+          Creando ticket...
+        } @else {
+          Crear ticket →
+        }
+
+      </button>
+
+      <button
+        class="ta-btn"
+        (click)="limpiarFormulario()"
+        [disabled]="cargando">
+        Limpiar
+      </button>
+
     </div>
+
   </div>
 
 </div>

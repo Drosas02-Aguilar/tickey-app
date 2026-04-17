@@ -22,16 +22,18 @@ export class UsuarioForm implements OnInit {
 
   rolesDisponibles = [
     { id: 1, nombre: 'ADMIN' },
-    { id: 2, nombre: 'AGENTE' },
-    { id: 3, nombre: 'USER' },
+    { id: 3, nombre: 'AGENTE' },
+    { id: 2, nombre: 'USER' },
   ];
 
   modoEdicion: boolean = false;
   usuarioId: number | null = null;
-
+  formularioListo: boolean = false;
   cargando: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+
+  errores: { [key: string]: string } = {};
 
   constructor(
     private usuarioService: UsuarioService,
@@ -42,15 +44,19 @@ export class UsuarioForm implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    console.log('ID recibido:', id);
     if (id) {
       this.modoEdicion = true;
       this.usuarioId = Number(id);
       this.cargarUsuario(this.usuarioId);
+    } else {
+      this.formularioListo = true;
     }
   }
 
   cargarUsuario(id: number): void {
     this.cargando = true;
+    this.formularioListo = false;
     this.usuarioService.obtenerPorId(id).subscribe({
       next: (res) => {
         if (res.correct && res.object) {
@@ -64,11 +70,14 @@ export class UsuarioForm implements OnInit {
           this.errorMessage = res.ErrorMessage || 'Error al cargar usuario';
         }
         this.cargando = false;
+        this.formularioListo = true;
         this.cdr.detectChanges();
       },
       error: () => {
         this.errorMessage = 'Error al conectar con el servidor';
+
         this.cargando = false;
+        this.formularioListo = true;
         this.cdr.detectChanges();
       },
     });
@@ -86,6 +95,73 @@ export class UsuarioForm implements OnInit {
   tieneRol(id: number): boolean {
     return this.rolesids.includes(id);
   }
+
+
+  private soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]+$/;
+  private regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  private iniciaConLetra = /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]/;
+
+
+  validarCampo(campo: string): void {
+    this.errores[campo] = '';
+
+    switch (campo) {
+      case 'nombre':
+        if (!this.nombre.trim())
+          this.errores['nombre'] = 'El nombre es obligatorio';
+        else if (!this.soloLetras.test(this.nombre.trim()))
+          this.errores['nombre'] = 'Solo se permiten letras';
+        break;
+
+      case 'apellidopaterno':
+        if (!this.apellidopaterno.trim())
+          this.errores['apellidopaterno'] = 'El apellido paterno es obligatorio';
+        else if (!this.soloLetras.test(this.apellidopaterno.trim()))
+          this.errores['apellidopaterno'] = 'Solo se permiten letras';
+        break;
+
+      case 'apellidomaterno':
+        if (this.apellidomaterno.trim() && !this.soloLetras.test(this.apellidomaterno.trim()))
+          this.errores['apellidomaterno'] = 'Solo se permiten letras';
+        break;
+
+      case 'correo':
+        if (!this.correo.trim())
+          this.errores['correo'] = 'El correo es obligatorio';
+        else if (!this.regexCorreo.test(this.correo.trim()))
+          this.errores['correo'] = 'Ingresa un correo válido (ejemplo@correo.com)';
+        break;
+
+      case 'username':
+        if (!this.username.trim())
+          this.errores['username'] = 'El nombre de usuario es obligatorio';
+        else if (!this.iniciaConLetra.test(this.username.trim()))
+          this.errores['username'] = 'El usuario no puede iniciar con números';
+        else if (this.username.trim().length < 3)
+          this.errores['username'] = 'Mínimo 3 caracteres';
+        break;
+
+      case 'password':
+        if (!this.modoEdicion) {
+          if (!this.password.trim())
+            this.errores['password'] = 'La contraseña es obligatoria';
+          else if (this.password.length < 8)
+            this.errores['password'] = 'Mínimo 8 caracteres';
+          else if (this.password.length > 50)
+            this.errores['password'] = 'Máximo 50 caracteres';
+        }
+        break;
+    }
+  }
+
+  private validarTodo(): boolean {
+    ['nombre', 'apellidopaterno', 'apellidomaterno', 'correo', 'username', 'password'].forEach(
+      (c) => this.validarCampo(c)
+    );
+    return Object.values(this.errores).every((e) => !e);
+  }
+
+
 
   guardar(): void {
     this.errorMessage = '';
@@ -142,7 +218,7 @@ export class UsuarioForm implements OnInit {
     } else {
       const datos = {
         nombre: this.nombre,
-        apeliidopaterno: this.apellidopaterno,
+        apellidopaterno: this.apellidopaterno,
         apellidomaterno: this.apellidomaterno,
         correo: this.correo,
         username: this.username,

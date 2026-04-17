@@ -1,75 +1,98 @@
-<div class="d-flex flex-column bg-dark text-white shadow" style="width: 240px; min-height: 100vh;">
-  <!-- Logo -->
-  <div class="px-4 py-3 border-bottom border-secondary">
-    <span class="fw-bold fs-5">
-      <i class="bi bi-kanban me-2 text-primary"></i>Menú
+<aside class="ta-sidebar">
+  <!-- Logo / Cabecera -->
+  <div class="ta-sidebar__header">
+    <span class="ta-sidebar__logo">
+      <i class="bi bi-kanban"></i>
+      Menú
     </span>
   </div>
 
-  <!-- Links -->
-  <nav class="nav flex-column px-2 py-3 gap-1">
-    <!-- Mis Tickets - Todos -->
-    <a (click)="navegarA('/mis-tickets', $event)"
-       [class.active]="router.url === '/mis-tickets'"
-       class="nav-link text-white px-3 py-2 rounded"
-       style="cursor: pointer;">
-      <i class="bi bi-person me-2"></i>Mis Tickets
+  <!-- Navegación principal -->
+  <nav class="ta-sidebar__nav">
+    <!-- Mis Tickets -->
+    <a
+      (click)="navegarA('/mis-tickets', $event)"
+      [class.active]="router.url === '/mis-tickets'"
+      class="ta-sidebar__link"
+    >
+      <i class="bi bi-person"></i>
+      <span>Mis Tickets</span>
     </a>
 
-    <!-- Nuevo Ticket - Todos -->
-    <a (click)="navegarA('/tickets/nuevo', $event)"
-       [class.active]="router.url === '/tickets/nuevo'"
-       class="nav-link text-white px-3 py-2 rounded"
-       style="cursor: pointer;">
-      <i class="bi bi-plus-circle me-2"></i>Nuevo Ticket
+    <!-- Tickets Asignados -->
+    <a
+      (click)="navegarA('/tickets-asignados', $event)"
+      [class.active]="router.url === '/tickets-asignados'"
+      class="ta-sidebar__link"
+    >
+      <i class="bi bi-ticket-detailed"></i>
+      <span>Tickets Asignados</span>
+    </a>
+
+    <!-- Nuevo Ticket -->
+    <a
+      (click)="navegarA('/tickets/nuevo', $event)"
+      [class.active]="router.url === '/tickets/nuevo'"
+      class="ta-sidebar__link"
+    >
+      <i class="bi bi-plus-circle"></i>
+      <span>Nuevo Ticket</span>
     </a>
 
     <!-- Separador -->
-    <div class="border-top border-secondary my-2"></div>
+    <div class="ta-sidebar__divider"></div>
 
-    <!-- Todos los Tickets - Solo Admin y Agente -->
+    <!-- Todos los Tickets (Admin/Agente) -->
     @if (esAdminOAgente()) {
-      <a (click)="navegarA('/tickets', $event)"
-         [class.active]="router.url === '/tickets'"
-         class="nav-link text-white px-3 py-2 rounded"
-         style="cursor: pointer;">
-        <i class="bi bi-ticket-perforated me-2"></i>Todos los Tickets
+      <a
+        (click)="navegarA('/tickets', $event)"
+        [class.active]="router.url === '/tickets'"
+        class="ta-sidebar__link"
+      >
+        <i class="bi bi-ticket-perforated"></i>
+        <span>Todos los Tickets</span>
       </a>
     }
 
-    <!-- Gestión de Usuarios - Admin y Agente -->
+    <!-- Gestión de Usuarios (Admin/Agente) -->
     @if (esAdminOAgente()) {
-      <a (click)="navegarA('/usuarios', $event)"
-         [class.active]="router.url === '/usuarios'"
-         class="nav-link text-white px-3 py-2 rounded"
-         style="cursor: pointer;">
-        <i class="bi bi-people me-2"></i>Usuarios
+      <a
+        (click)="navegarA('/usuarios', $event)"
+        [class.active]="router.url === '/usuarios'"
+        class="ta-sidebar__link"
+      >
+        <i class="bi bi-people"></i>
+        <span>Usuarios</span>
       </a>
     }
 
-    <!-- Nuevo Usuario - Solo Admin -->
+    <!-- Nuevo Usuario (Solo Admin) -->
     @if (esAdmin()) {
-      <a (click)="navegarA('/usuarios/nuevo', $event)"
-         [class.active]="router.url === '/usuarios/nuevo'"
-         class="nav-link text-white px-3 py-2 rounded"
-         style="cursor: pointer;">
-        <i class="bi bi-person-plus me-2"></i>Nuevo Usuario
+      <a
+        (click)="navegarA('/usuarios/nuevo', $event)"
+        [class.active]="router.url === '/usuarios/nuevo'"
+        class="ta-sidebar__link"
+      >
+        <i class="bi bi-person-plus"></i>
+        <span>Nuevo Usuario</span>
       </a>
     }
   </nav>
 
-  <!-- Footer del sidebar -->
-  <div class="mt-auto p-3 border-top border-secondary">
-    <div class="d-flex align-items-center gap-2 mb-2">
-      <i class="bi bi-person-circle fs-5"></i>
-      <div>
-        <small class="d-block text-white">{{ username }}</small>
-        <small class="text-muted">{{ rolFormateado }}</small>
+  <!-- Footer con info del usuario -->
+  <div class="ta-sidebar__footer">
+    <div class="ta-sidebar__user">
+      <div class="ta-sidebar__user-avatar">
+        <i class="bi bi-person-circle"></i>
+      </div>
+      <div class="ta-sidebar__user-info">
+        <span class="ta-sidebar__user-name">{{ username }}</span>
+        <span class="ta-sidebar__user-role">{{ rolFormateado }}</span>
       </div>
     </div>
-    <small class="text-muted d-block text-center">
-      <i class="bi bi-shield-check me-1"></i>
+    <div class="ta-sidebar__version">
+      <i class="bi bi-shield-check"></i>
       v1.0.0
-    </small>
+    </div>
   </div>
-</div>
+</aside>

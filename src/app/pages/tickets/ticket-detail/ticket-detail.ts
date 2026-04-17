@@ -30,6 +30,7 @@ export class TicketDetail implements OnInit {
   cargandoComentarios: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
+  rutaVolver: string = '';
 
   estados: string[] = ['ABIERTO', 'PROCESO', 'RESUELTO', 'CERRADO'];
 
@@ -44,7 +45,7 @@ export class TicketDetail implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-
+    this.rutaVolver = this.authService.getRutalVOler();
     if (id) {
       this.cargarTicket(Number(id));
       this.cargarComentarios(Number(id));

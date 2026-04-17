@@ -10,11 +10,12 @@ import { TicketForm } from './pages/tickets/ticket-form/ticket-form';
 import { TicketList } from './pages/tickets/ticket-list/ticket-list';
 import { Layout } from './shared/components/layout/layout';
 import { MisTickets } from './pages/tickets/mis-tickets/mis-tickets';
+import { TicketsAsignados } from './pages/tickets/tickets-asignados/tickets-asignados';
 
 export const routes: Routes = [
   {
     path: 'login',
-    component: Login
+    component: Login,
   },
   {
     path: '',
@@ -25,59 +26,63 @@ export const routes: Routes = [
         path: 'tickets',
         component: TicketList,
         canActivate: [roleGuard],
-        data: { roles: ['ADMIN', 'AGENTE'] }
+        data: { roles: ['ADMIN', 'AGENTE'] },
       },
       {
         path: 'tickets/nuevo',
         component: TicketForm,
         canActivate: [roleGuard],
-        data: { roles: ['ADMIN', 'AGENTE', 'USER'] }
+        data: { roles: ['ADMIN', 'AGENTE', 'USER'] },
       },
       {
         path: 'tickets/:id',
         component: TicketDetail,
         canActivate: [roleGuard],
-        data: { roles: ['ADMIN', 'AGENTE', 'USER'] }
+        data: { roles: ['ADMIN', 'AGENTE', 'USER'] },
       },
       {
         path: 'mis-tickets',
         component: MisTickets,
         canActivate: [roleGuard],
-        data: { roles: ['ADMIN', 'AGENTE', 'USER'] }
-
-
+        data: { roles: ['ADMIN', 'AGENTE', 'USER'] },
       },
       {
         path: 'usuarios',
         component: UsuarioList,
         canActivate: [roleGuard],
-        data: { roles: ['ADMIN', 'AGENTE'] }
+        data: { roles: ['ADMIN', 'AGENTE'] },
       },
       {
         path: 'usuarios/nuevo',
         component: UsuarioForm,
         canActivate: [roleGuard],
-        data: { roles: ['ADMIN'] }
+        data: { roles: ['ADMIN'] },
       },
       {
         path: 'usuarios/:id/editar',
         component: UsuarioForm,
         canActivate: [roleGuard],
-        data: { roles: ['ADMIN'] }
+        data: { roles: ['ADMIN'] },
       },
       {
         path: '',
         redirectTo: 'tickets',
-        pathMatch: 'full'
-      }
-    ]
+        pathMatch: 'full',
+      },
+      {
+        path: 'tickets-asignados',
+        component: TicketsAsignados,
+        canActivate: [roleGuard],
+        data: { roles: ['ADMIN', 'AGENTE', 'USER'] },
+      },
+    ],
   },
   {
     path: 'sin-acceso',
-    component: SinAcceso
+    component: SinAcceso,
   },
   {
     path: '**',
-    redirectTo: 'login'
-  }
+    redirectTo: 'login',
+  },
 ];

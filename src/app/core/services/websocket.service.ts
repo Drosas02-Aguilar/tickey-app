@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
-import SockJS from 'sockjs-client';
-import * as Stomp from 'stompjs';
 import { Subject } from 'rxjs';
+
+
+declare var SockJS: any;
+declare var Stomp: any;
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
 
-  private stompClient: any;
+  private stompClient: any = null;
   private notificationSubject = new Subject<any>();
-
   notifications$ = this.notificationSubject.asObservable();
 
-  connect(usuarioId: number) {
+  connect(usuarioId: number): void {
     const socket = new SockJS('http://localhost:8080/ws');
     this.stompClient = Stomp.over(socket);
+
+    this.stompClient.debug = null;
 
     this.stompClient.connect({}, () => {
 

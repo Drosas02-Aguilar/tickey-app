@@ -1,0 +1,99 @@
+<div class="ta-wrap">
+
+  <!-- Header -->
+  <div class="ta-header">
+    <div>
+      <h4 class="ta-title">Tickets asignados</h4>
+      <small class="ta-sub">Tickets que el equipo te ha asignado directamente</small>
+    </div>
+    <div class="ta-stats">
+      <div class="ta-stat">
+        <div class="ta-stat-num">{{ tickets.length }}</div>
+        <div class="ta-stat-lbl">Total</div>
+      </div>
+      <div class="ta-stat">
+        <div class="ta-stat-num alta">{{ contarPorPrioridad('ALTA') }}</div>
+        <div class="ta-stat-lbl">Alta</div>
+      </div>
+      <div class="ta-stat">
+        <div class="ta-stat-num proceso">{{ contarPorEstado('PROCESO') }}</div>
+        <div class="ta-stat-lbl">En proceso</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="ta-filters">
+    <button class="ta-filter" [class.active]="filtroActivo === 'TODOS'"
+            (click)="filtrar('TODOS')">Todos</button>
+    <button class="ta-filter" [class.active]="filtroActivo === 'ABIERTO'"
+            (click)="filtrar('ABIERTO')">Abierto</button>
+    <button class="ta-filter" [class.active]="filtroActivo === 'PROCESO'"
+            (click)="filtrar('PROCESO')">En proceso</button>
+    <button class="ta-filter" [class.active]="filtroActivo === 'RESUELTO'"
+            (click)="filtrar('RESUELTO')">Resuelto</button>
+    <button class="ta-filter" [class.active]="filtroActivo === 'ALTA'"
+            (click)="filtrar('ALTA')">Prioridad alta</button>
+  </div>
+
+  <!-- Loading -->
+  @if (cargando) {
+    <div class="ta-loading">
+      <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+      <span>Cargando tickets...</span>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (!cargando && error) {
+    <div class="ta-empty">
+      <span>{{ error }}</span>
+    </div>
+  }
+
+  <!-- Cards -->
+  @if (!cargando && ticketsFiltrados.length > 0) {
+    <div class="ta-cards">
+      @for (ticket of ticketsFiltrados; track ticket.id) {
+        <div class="ta-card">
+          <div class="ta-card-accent" [ngClass]="ticket.prioridad.toLowerCase()"></div>
+          <div class="ta-card-inner">
+            <div class="ta-card-top">
+              <span class="ta-card-id">#{{ ticket.id }}</span>
+              <span class="ta-badge" [ngClass]="ticket.estadoticket.toLowerCase()">
+                {{ ticket.estadoticket }}
+              </span>
+            </div>
+            <p class="ta-card-title">{{ ticket.titulo }}</p>
+            <p class="ta-card-desc">{{ ticket.descripcion | slice:0:80 }}...</p>
+            <div class="ta-prio-row">
+              <span class="ta-prio" [ngClass]="ticket.prioridad.toLowerCase()">
+                <span class="ta-dot" [ngClass]="ticket.prioridad.toLowerCase()"></span>
+                {{ ticket.prioridad }}
+              </span>
+            </div>
+            <div class="ta-card-meta">
+              <div class="ta-meta-user">
+                <div class="ta-avatar">{{ ticket.creador | slice:0:2 | uppercase }}</div>
+                <span class="ta-meta-name">{{ ticket.creador ?? 'Sin creador' }}</span>
+              </div>
+              <span class="ta-meta-date">
+                {{ ticket.fechacreacion | date:'dd/MM/yyyy HH:mm' }}
+              </span>
+            </div>
+            <div class="ta-card-footer">
+              <button class="ta-btn" [routerLink]="['/tickets', ticket.id]">
+                Ver detalle →
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (!cargando && !error && ticketsFiltrados.length === 0) {
+    <div class="ta-empty">No hay tickets con ese filtro.</div>
+  }
+
+</div>

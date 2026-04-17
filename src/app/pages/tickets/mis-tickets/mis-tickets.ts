@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { TicketService } from '../../../core/services/ticket.service';
 import { Ticket } from '../../../core/models/ticket.model';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-mis-tickets',
@@ -13,17 +14,21 @@ import { Ticket } from '../../../core/models/ticket.model';
 })
 export class MisTickets implements OnInit {
 
+
+  rutaVoler: string = '';
   tickets: Ticket[] = [];
   cargando: boolean = false;
   errorMessage: string = '';
 
   constructor(
     private ticketService: TicketService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private authService : AuthService
   ) {}
 
   ngOnInit(): void {
     this.cargarMisTickets();
+    this.rutaVoler = this.authService.getRutalVOler();
   }
 
   cargarMisTickets(): void {

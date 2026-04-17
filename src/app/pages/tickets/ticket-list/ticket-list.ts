@@ -79,4 +79,6 @@ export class TicketList implements OnInit {
       default: return 'badge bg-secondary';
     }
   }
+
+
 }

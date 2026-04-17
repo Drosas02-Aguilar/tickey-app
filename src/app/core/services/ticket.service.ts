@@ -14,8 +14,8 @@ export class TicketService {
   constructor(private http: HttpClient) {}
 
   listar(): Observable<ServiceResult<Ticket>> {
-  return this.http.get<ServiceResult<Ticket>>(this.url);
-}
+    return this.http.get<ServiceResult<Ticket>>(this.url);
+  }
 
   obtenerPorId(id: number): Observable<ServiceResult<Ticket>> {
     return this.http.get<ServiceResult<Ticket>>(`${this.url}/${id}`);
@@ -30,14 +30,17 @@ export class TicketService {
   }
 
   misTickets(): Observable<ServiceResult<Ticket>> {
-  return this.http.get<ServiceResult<Ticket>>(`${this.url}/mis-tickets`);
-}
-
+    return this.http.get<ServiceResult<Ticket>>(`${this.url}/mis-tickets`);
+  }
 
   cambiarEstado(ticketId: number, estado: string): Observable<ServiceResult<Ticket>> {
     return this.http.patch<ServiceResult<Ticket>>(
       `${this.url}/${ticketId}/estado?estado=${estado}`,
       {},
     );
+  }
+
+  asignadoAmi(): Observable<ServiceResult<Ticket>> {
+    return this.http.get<ServiceResult<Ticket>>(`${this.url}/asignados-a-mi`);
   }
 }

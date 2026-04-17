@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Sans:wght@400;500&display=swap');
+
+.ta-wrap {
+  font-family: 'DM Sans', sans-serif;
+  padding: 1.5rem 2rem;
+}
+
+.ta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.ta-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.ta-sub {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0;
+}
+
+.ta-stats {
+  display: flex;
+  gap: 10px;
+}
+
+.ta-stat {
+  background: #f8f9fa;
+  border: 0.5px solid #dee2e6;
+  border-radius: 8px;
+  padding: 10px 18px;
+  text-align: center;
+}
+
+.ta-stat-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.ta-stat-num.alta   { color: #E24B4A; }
+.ta-stat-num.proceso { color: #EF9F27; }
+
+.ta-stat-lbl {
+  font-size: 11px;
+  color: #6c757d;
+  margin-top: 3px;
+}
+
+.ta-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.ta-filter {
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 0.5px solid #dee2e6;
+  background: #fff;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ta-filter.active,
+.ta-filter:hover {
+  background: #1a1a2e;
+  color: #fff;
+  border-color: #1a1a2e;
+}
+
+.ta-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+}
+
+.ta-card {
+  background: #fff;
+  border: 0.5px solid #dee2e6;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  display: flex;
+}
+
+.ta-card:hover {
+  border-color: #adb5bd;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.ta-card-accent {
+  width: 3px;
+  flex-shrink: 0;
+}
+
+.ta-card-accent.alta   { background: #E24B4A; }
+.ta-card-accent.media  { background: #EF9F27; }
+.ta-card-accent.baja   { background: #639922; }
+
+.ta-card-inner {
+  padding: 1.1rem 1.1rem 1rem;
+  flex: 1;
+}
+
+.ta-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ta-card-id {
+  font-size: 11px;
+  color: #adb5bd;
+  font-family: 'Syne', sans-serif;
+}
+
+.ta-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.ta-badge.abierto  { background: #E6F1FB; color: #185FA5; }
+.ta-badge.proceso  { background: #FAEEDA; color: #854F0B; }
+.ta-badge.resuelto { background: #EAF3DE; color: #3B6D11; }
+.ta-badge.cerrado  { background: #f1efe8; color: #5F5E5A; }
+
+.ta-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0 0 5px;
+}
+
+.ta-card-desc {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.ta-prio-row {
+  margin-bottom: 12px;
+}
+
+.ta-prio {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ta-prio.alta  { color: #A32D2D; }
+.ta-prio.media { color: #854F0B; }
+.ta-prio.baja  { color: #3B6D11; }
+
+.ta-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.ta-dot.alta  { background: #844040; }
+.ta-dot.media { background: #EF9F27; }
+.ta-dot.baja  { background: #639922; }
+
+.ta-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 0.5px solid #f1f3f5;
+  margin-bottom: 10px;
+}
+
+.ta-meta-user {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ta-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #CECBF6;
+  color: #3C3489;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.ta-meta-name { font-size: 12px; color: #6c757d; }
+.ta-meta-date { font-size: 11px; color: #adb5bd; }
+
+.ta-btn {
+  width: 100%;
+  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 0.5px solid #dee2e6;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.15s;
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+
+.ta-btn:hover {
+  background: #f8f9fa;
+}
+
+.ta-loading,
+.ta-empty {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}

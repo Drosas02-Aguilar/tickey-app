@@ -1,19 +1,305 @@
-.table th {
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Sans:wght@400;500&display=swap');
+
+/* ===== CONTENEDOR ===== */
+.ta-wrap {
+  font-family: 'DM Sans', sans-serif;
+  padding: 1.5rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.table td {
-  font-size: 0.9rem;
+/* ===== HEADER ===== */
+.ta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.badge {
-  font-size: 0.75rem;
-  padding: 0.4em 0.7em;
-  border-radius: 6px;
+.ta-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1a1a2e;
 }
 
-.btn-sm {
-  border-radius: 6px;
+.ta-title i {
+  color: #4b4b6c;
+  font-size: 20px;
+}
+
+.ta-sub {
+  font-size: 13px;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* ===== BOTONES ===== */
+.ta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.ta-btn--primary {
+  background: #1a1a2e;
+  color: white;
+  border-color: #1a1a2e;
+}
+
+.ta-btn--primary:hover {
+  background: #2e2e4a;
+  border-color: #2e2e4a;
+}
+
+/* ===== ESTADOS DE CARGA / VACÍO ===== */
+.ta-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: #6c757d;
+  gap: 12px;
+}
+
+.ta-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e9ecef;
+  border-top-color: #1a1a2e;
+  border-radius: 50%;
+  animation: ta-spin 0.8s linear infinite;
+}
+
+@keyframes ta-spin {
+  to { transform: rotate(360deg); }
+}
+
+.ta-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #8f8f9a;
+}
+
+.ta-empty i {
+  font-size: 48px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.ta-empty p {
+  margin-bottom: 20px;
+}
+
+/* ===== ALERTAS ===== */
+.ta-alert {
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0.5px solid transparent;
+}
+
+.ta-alert--error {
+  background: #feeceb;
+  border-color: #f5c2c1;
+  color: #a32d2d;
+}
+
+.ta-alert--success {
+  background: #eaf3de;
+  border-color: #bcd99b;
+  color: #3b6d11;
+}
+
+/* ===== TARJETA DE TABLA ===== */
+.ta-card--table {
+  background: #fff;
+  border: 0.5px solid #dee2e6;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ta-table-wrapper {
+  overflow-x: auto;
+}
+
+/* ===== TABLA ===== */
+.ta-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 900px;
+}
+
+.ta-table thead tr {
+  background: #1a1a2e;
+  color: white;
+}
+
+.ta-table th {
+  padding: 14px 16px;
+  font-weight: 500;
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.ta-table td {
+  padding: 16px;
+  border-bottom: 0.5px solid #edf0f2;
+  vertical-align: middle;
+}
+
+.ta-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ta-table tbody tr:hover {
+  background: #fafbfc;
+}
+
+.ta-table-id {
+  color: #adb5bd;
+  font-weight: 500;
+  font-family: 'Syne', sans-serif;
+}
+
+.ta-text-center {
+  text-align: center;
+}
+
+/* ===== CELDA DE USUARIO ===== */
+.ta-user-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ta-avatar--sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #cecbf6;
+  color: #3c3489;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.ta-user-name {
+  font-weight: 500;
+  color: #1a1a2e;
+}
+
+/* ===== BADGE DE ROL ===== */
+.ta-role-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #e9ecef;
+  color: #495057;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+
+/* ===== BADGE DE ESTADO ===== */
+.ta-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ta-status-badge--activo {
+  background: #eaf3de;
+  color: #3b6d11;
+}
+
+.ta-status-badge--inactivo {
+  background: #feeceb;
+  color: #a32d2d;
+}
+
+/* ===== ACCIONES (BOTONES ICONO) ===== */
+.ta-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.ta-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  background: transparent;
+  color: #4b4b6c;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.ta-btn-icon:hover {
+  background: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.ta-btn-icon--primary:hover {
+  color: #1a1a2e;
+  background: #e6f1fb;
+  border-color: #b6d4f0;
+}
+
+.ta-btn-icon--success:hover {
+  color: #3b6d11;
+  background: #eaf3de;
+  border-color: #bcd99b;
+}
+
+.ta-btn-icon--danger:hover {
+  color: #a32d2d;
+  background: #feeceb;
+  border-color: #f5c2c1;
+}
+
+/* ===== UTILIDADES ===== */
+.ta-table i {
+  margin-right: 4px;
+  font-size: 12px;
+  opacity: 0.7;
 }

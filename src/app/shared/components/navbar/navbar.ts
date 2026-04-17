@@ -21,6 +21,9 @@ export class Navbar implements OnInit {
   tituloActual = '';
   usuarioId: number | null = null;
 
+  notificacionesAbierto = false;
+  usuarioAbierto = false;
+
   constructor(
     private authService: AuthService,
     private notificacionService: NotificacionService,
@@ -163,6 +166,20 @@ export class Navbar implements OnInit {
     if (url.includes('/usuarios')) return 'Usuarios';
 
     return 'Dashboard';
+  }
+
+  toggleNotificaciones(): void {
+    this.notificacionesAbierto = !this.notificacionesAbierto;
+    if (this.notificacionesAbierto) {
+      this.usuarioAbierto = false;
+    }
+  }
+
+  toggleUsuario(): void {
+    this.usuarioAbierto = !this.usuarioAbierto;
+    if (this.usuarioAbierto) {
+      this.notificacionesAbierto = false;
+    }
   }
 
   CerrarSesion(): void {

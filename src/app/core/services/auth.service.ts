@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequest, LoginResponse } from '../models/auth.model';
-import { Observable, tap } from 'rxjs';
+import { Observable, retry, tap } from 'rxjs';
 import { ServiceResult } from '../models/service-result.model';
 
 @Injectable({
@@ -90,5 +90,13 @@ export class AuthService {
     return id ? Number(id) : null;
   }
 
+
+  getRutalVOler(): string{
+    if(this.tieneRol('USER') && !this.tieneRol('ADMIN') && !this.tieneRol('AGENTE')){
+return '/mis-tickets';
+      
+    }
+return '/tickets'
+  }
 
 }

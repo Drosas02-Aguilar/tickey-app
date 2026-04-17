@@ -1,105 +1,114 @@
-<div class="container-fluid">
+<div class="ta-wrap">
 
   <!-- Header -->
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="ta-header">
     <div>
-      <h4 class="fw-bold mb-1">
-        <i class="bi bi-ticket me-2 text-primary"></i>Todos los Tickets
-      </h4>
-      <small class="text-muted">Gestión general de tickets del sistema</small>
+      <h4 class="ta-title">Todos los tickets</h4>
+      <small class="ta-sub">Gestión general de tickets del sistema</small>
     </div>
-    <a routerLink="/tickets/nuevo" class="btn btn-primary">
-      <i class="bi bi-plus-circle me-2"></i>Nuevo Ticket
+
+    <a routerLink="/tickets/nuevo" class="ta-btn ta-btn-primary">
+      + Nuevo Ticket
     </a>
   </div>
 
-  <!-- Cargando -->
-  <div *ngIf="cargando" class="text-center py-5">
-    <div class="spinner-border text-primary"></div>
-    <p class="mt-2 text-muted">Cargando tickets...</p>
-  </div>
+  <!-- Stats -->
+ 
+
+  <!-- Loading -->
+  @if (cargando) {
+    <div class="ta-loading">
+      <div class="spinner-border spinner-border-sm text-secondary"></div>
+      <span>Cargando tickets...</span>
+    </div>
+  }
 
   <!-- Error -->
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    <i class="bi bi-exclamation-triangle me-2"></i>{{ errorMessage }}
-  </div>
-
-  <!-- Tabla -->
-  <div *ngIf="!cargando && tickets.length > 0" class="card shadow-sm border-0">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-
-          <thead class="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Título</th>
-              <th>Prioridad</th>
-              <th>Estado</th>
-              <th>Creador</th>
-              <th>Asignado</th>
-              <th>Fecha</th>
-              <th class="text-center">Acciones</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let ticket of tickets">
-              <td class="text-muted fw-semibold">{{ ticket.id }}</td>
-              <td>
-                <span class="fw-semibold">{{ ticket.titulo }}</span>
-                <br>
-                <small class="text-muted">{{ ticket.descripcion | slice:0:50 }}...</small>
-              </td>
-              <td>
-                <span [class]="getBadgePrioridad(ticket.prioridad)">
-                  {{ ticket.prioridad }}
-                </span>
-              </td>
-              <td>
-                <span [class]="getBadgeEstado(ticket.estadoticket)">
-                  {{ ticket.estadoticket }}
-                </span>
-              </td>
-              <td>
-                <i class="bi bi-person me-1 text-muted"></i>{{ ticket.creador || '—' }}
-              </td>
-              <td>
-                <span *ngIf="ticket.asignado">
-                  <i class="bi bi-person-check me-1 text-success"></i>{{ ticket.asignado }}
-                </span>
-                <span *ngIf="!ticket.asignado" class="text-muted fst-italic">
-                  Sin asignar
-                </span>
-              </td>
-              <td>
-                <small class="text-muted">
-                  {{ ticket.fechacreacion | date:'dd/MM/yyyy' }}
-                </small>
-              </td>
-              <td class="text-center">
-                <a [routerLink]="['/tickets', ticket.id]"
-                   class="btn btn-sm btn-outline-primary me-1"
-                   title="Ver detalle">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-
-        </table>
-      </div>
+  @if (!cargando && errorMessage) {
+    <div class="ta-empty">
+      {{ errorMessage }}
     </div>
-  </div>
+  }
 
-  <!-- Sin tickets -->
-  <div *ngIf="!cargando && tickets.length === 0 && !errorMessage"
-       class="text-center py-5">
-    <i class="bi bi-inbox fs-1 text-muted"></i>
-    <p class="mt-2 text-muted">No hay tickets registrados</p>
-    <a routerLink="/tickets/nuevo" class="btn btn-primary">
-      <i class="bi bi-plus-circle me-2"></i>Crear primer ticket
-    </a>
-  </div>
+  <!-- Tabla custom -->
+  @if (!cargando && tickets.length > 0) {
+    <div class="ta-table">
+
+      <!-- Header -->
+      <div class="ta-table-head">
+        <div>#</div>
+        <div>Ticket</div>
+        <div>Prioridad</div>
+        <div>Estado</div>
+        <div>Creador</div>
+        <div>Asignado</div>
+        <div>Fecha</div>
+        <div class="center">Acciones</div>
+      </div>
+
+      <!-- Rows -->
+      @for (ticket of tickets; track ticket.id) {
+        <div class="ta-table-row">
+
+          <div class="muted">#{{ ticket.id }}</div>
+
+          <div>
+            <div class="ta-card-title">{{ ticket.titulo }}</div>
+            <div class="ta-card-desc">
+              {{ ticket.descripcion | slice:0:60 }}...
+            </div>
+          </div>
+
+          <div>
+            <span class="ta-prio" [ngClass]="ticket.prioridad.toLowerCase()">
+              <span class="ta-dot" [ngClass]="ticket.prioridad.toLowerCase()"></span>
+              {{ ticket.prioridad }}
+            </span>
+          </div>
+
+          <div>
+            <span class="ta-badge" [ngClass]="ticket.estadoticket.toLowerCase()">
+              {{ ticket.estadoticket }}
+            </span>
+          </div>
+
+          <div class="muted">
+            {{ ticket.creador || '—' }}
+          </div>
+
+          <div>
+            @if (ticket.asignado) {
+              <span class="ta-meta-name">{{ ticket.asignado }}</span>
+            } @else {
+              <span class="muted italic">Sin asignar</span>
+            }
+          </div>
+
+          <div class="muted">
+            {{ ticket.fechacreacion | date:'dd/MM/yyyy' }}
+          </div>
+
+          <div class="center">
+            <a [routerLink]="['/tickets', ticket.id]" class="ta-btn-sm">
+              Ver →
+            </a>
+          </div>
+
+        </div>
+      }
+
+    </div>
+  }
+
+  <!-- Empty -->
+  @if (!cargando && tickets.length === 0 && !errorMessage) {
+    <div class="ta-empty">
+      No hay tickets registrados
+      <br><br>
+      <a routerLink="/tickets/nuevo" class="ta-btn ta-btn-primary">
+        Crear primer ticket
+      </a>
+    </div>
+  }
 
 </div>

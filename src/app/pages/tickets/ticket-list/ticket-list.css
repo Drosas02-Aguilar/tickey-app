@@ -1,19 +1,159 @@
-.table th {
-  font-size: 0.85rem;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700&family=DM+Sans:wght@400;500&display=swap');
+
+/* Base */
+.ta-wrap {
+  font-family: 'DM Sans', sans-serif;
+  padding: 1.5rem 2rem;
 }
 
-.table td {
-  font-size: 0.9rem;
+.ta-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
 }
 
-.badge {
-  font-size: 0.75rem;
-  padding: 0.4em 0.7em;
+.ta-sub {
+  font-size: 13px;
+  color: #6c757d;
+}
+
+/* Header */
+.ta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+/* Botón */
+.ta-btn-primary {
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  text-decoration: none;
+  border: none;
+}
+
+.ta-btn-primary:hover {
+  opacity: 0.9;
+}
+
+/* Tabla moderna */
+.ta-table {
+  border: 0.5px solid #dee2e6;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* Header tabla */
+.ta-table-head {
+  display: grid;
+  grid-template-columns: 60px 2fr 120px 120px 120px 140px 120px 100px;
+  padding: 12px 16px;
+  font-size: 11px;
+  color: #6c757d;
+  border-bottom: 0.5px solid #dee2e6;
+  background: #f8f9fa;
+}
+
+/* Rows */
+.ta-table-row {
+  display: grid;
+  grid-template-columns: 60px 2fr 120px 120px 120px 140px 120px 100px;
+  padding: 14px 16px;
+  align-items: center;
+  border-bottom: 0.5px solid #f1f3f5;
+  transition: background 0.15s;
+}
+
+.ta-table-row:hover {
+  background: #f8f9fa;
+}
+
+/* Textos */
+.muted {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.center {
+  text-align: center;
+}
+
+/* Botón pequeño */
+.ta-btn-sm {
+  font-size: 11px;
+  padding: 5px 10px;
   border-radius: 6px;
+  border: 0.5px solid #dee2e6;
+  text-decoration: none;
+  color: inherit;
 }
 
-.btn-sm {
-  border-radius: 6px;
+.ta-btn-sm:hover {
+  background: #f1f3f5;
 }
+
+/* Reutilizados de tu diseño */
+.ta-card-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.ta-card-desc {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+/* Loading / empty */
+.ta-loading,
+.ta-empty {
+  text-align: center;
+  padding: 3rem;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* PRIORIDADES */
+.ta-prio {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ta-prio.alta  { color: #A32D2D; }
+.ta-prio.media { color: #854F0B; }
+.ta-prio.baja  { color: #3B6D11; }
+
+.ta-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.ta-dot.alta  { background: #844040; }
+.ta-dot.media { background: #EF9F27; }
+.ta-dot.baja  { background: #639922; }
+
+/* BADGES */
+.ta-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.ta-badge.abierto  { background: #E6F1FB; color: #185FA5; }
+.ta-badge.proceso  { background: #FAEEDA; color: #854F0B; }
+.ta-badge.resuelto { background: #EAF3DE; color: #3B6D11; }
+.ta-badge.cerrado  { background: #f1efe8; color: #5F5E5A; }
+
