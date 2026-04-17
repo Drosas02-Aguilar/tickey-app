@@ -80,5 +80,15 @@ export class AuthService {
   }
 
 
+    guardarUsuarioId(id: number): void {
+    localStorage.setItem('usuarioId', id.toString());
+  }
+
+
+  obtenerUsuarioId(): number | null {
+    const id = localStorage.getItem('usuarioId');
+    return id ? Number(id) : null;
+  }
+
 
 }
